@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="\Magento\Widget\Block\Adminhtml\Widget\Form"
+                type="\Magenerds\PageDesigner\Block\Adminhtml\Widget\Form"/>
+    <preference for="Magento\Framework\App\Arguments\ValidationState"
+                type="Magenerds\PageDesigner\Model\ValidationState"/>
+    <preference for="Magenerds\PageDesigner\Utils\HtmlRendererInterface"
+                type="Magenerds\PageDesigner\Utils\HtmlRenderer"/>
+    <!-- Plugins -->
+    <type name="\Magento\Cms\Model\Page">
+        <plugin name="Magenerds_PageDesigner::cmsPageRenderJson"
+                type="Magenerds\PageDesigner\Plugin\Cms\Model\Page\PagePlugin" sortOrder="100"/>
+    </type>
+    <type name="Magento\Cms\Model\Page\DataProvider">
+        <plugin name="Magenerds_PageDesigner::injectPageHtmlIntoJson"
+                type="Magenerds\PageDesigner\Plugin\Cms\Model\Page\DataProviderPlugin" sortOrder="100"/>
+    </type>
+    <type name="\Magento\Cms\Model\Block">
+        <plugin name="Magenerds_PageDesigner::cmsBlockRenderJson"
+                type="Magenerds\PageDesigner\Plugin\Cms\Model\Block\BlockPlugin" sortOrder="100"/>
+    </type>
+    <type name="Magento\Cms\Model\Block\DataProvider">
+        <plugin name="Magenerds_PageDesigner::injectPageHtmlIntoJson"
+                type="Magenerds\PageDesigner\Plugin\Cms\Model\Block\DataProviderPlugin" sortOrder="100"/>
+    </type>
+    <type name="Magento\Widget\Model\Widget">
+        <plugin name="Magenerds_PageDesigner::widgetEncode"
+                type="Magenerds\PageDesigner\Plugin\Model\WidgetPlugin"/>
+    </type>
+    <type name="Magento\Widget\Block\Adminhtml\Widget\Options">
+        <plugin name="Magenerds_PageDesigner::widgetDecodeBackend"
+                type="Magenerds\PageDesigner\Plugin\Block\WidgetOptionsPlugin"/>
+    </type>
+</config>

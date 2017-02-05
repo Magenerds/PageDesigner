@@ -1,0 +1,57 @@
+<?php
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * Template for the Page Designer configuration
+ *
+ * @package     Magenerds\PageDesigner
+ * @file        config.phtml
+ * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @site        https://www.techdivision.com/
+ * @author      Simon Sippert <s.sippert@techdivision.com>
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<script>
+    /**
+     * Page Designer Configuration Object
+     *
+     * @type {object}
+     */
+    window.pageDesignerConfig = {
+        // settings route url (columns)
+        columnSettingsUrl: <?php echo json_encode($block->getUrl('adminhtml/pageDesigner/columnSettings')); ?>,
+        // settings route url (rows)
+        rowSettingsUrl: <?php echo json_encode($block->getUrl('adminhtml/pageDesigner/rowSettings')); ?>,
+        // settings save callback
+        settingsCallback: null,
+        /**
+         * Set settings function. Gets called by overlay save button.
+         */
+        setSettings: function () {
+            // retrieve data
+            var data = jQuery(this).closest('form').serializeArray();
+
+            // define json
+            var json = {};
+
+            // add data to json
+            jQuery(data).each(function () {
+                json[this.name] = this.value;
+            });
+
+            // save settings on column
+            window.pageDesignerConfig.settingsCallback(json);
+
+            // close modal
+            jQuery('.modals-wrapper .modal-slide._show .action-close').last().trigger('click');
+        }
+    };
+</script>

@@ -1,0 +1,49 @@
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ */
+
+/**
+ * Font styles
+ */
+@font-face {
+    font-family: 'pd-icons';
+    src: url('../fonts/pd-icons.eot?19201423');
+    src: url('../fonts/pd-icons.eot?19201423#iefix') format('embedded-opentype'),
+    url('../fonts/pd-icons.woff2?19201423') format('woff2'),
+    url('../fonts/pd-icons.woff?19201423') format('woff'),
+    url('../fonts/pd-icons.ttf?19201423') format('truetype'),
+    url('../fonts/pd-icons.svg?19201423#pd-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+[class^="pd-icon-"]:before, [class*=" pd-icon-"]:before {
+    font-family: "pd-icons", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.pd-icon-add:before { content: '\e807'; }
+.pd-icon-remove:before { content: '\e808'; }
+.pd-icon-copy:before { content: '\e809'; }
+.pd-icon-paste:before { content: '\e80a'; }
+.pd-icon-settings:before { content: '\e869'; }
+.pd-icon-device-lg:before { content: '\f108'; }
+.pd-icon-device-md:before { content: '\f109'; }
+.pd-icon-device-sm:before { content: '\f10a'; }
+.pd-icon-device-xs:before { content: '\f10b'; }
+.pd-icon-move:before { content: '\f56b'; }
