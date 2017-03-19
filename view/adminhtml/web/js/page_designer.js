@@ -278,6 +278,13 @@ define([
                     "onColumnContentSet": function (column, currentContent, callback) {
                         // set editor as a block element to be able to access it
                         var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
+
+                        // ensure that tiny mce is ready
+                        if (wysControl.find('.mceEditor').length < 1) {
+                            tinyMCE.dom.Event.domLoaded = true;
+                            wysControl.find('.action-show-hide').get(0).click()
+                        }
+
                         if (wysControl.is(':hidden')) {
                             wysControl.css({
                                 display: 'block',
