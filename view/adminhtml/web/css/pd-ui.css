@@ -13,17 +13,17 @@
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
-.page-designer { display: block; padding: 30px 40px; overflow-x: scroll; min-width: 1260px; background: #fff; }
+.page-designer { display: block; padding: 30px 40px; overflow-x: scroll; width:100%; background: #fff; }
 .page-designer a { cursor: pointer; display: inline-block; color: #adadad; transition: color ease 0.3s, background ease 0.3s; }
 .page-designer a:hover, .page-designer a.active { color: #000; text-decoration: none; }
 .page-designer .pd-icon { white-space: nowrap; padding: 4px 2px; display: block; font-size: 120%; }
 /* Grid */
-.page-designer .pd-grid { width: 100%; }
+.page-designer .pd-grid { min-width: 1281px; width: 100%; }
 .page-designer .pd-grid .pd-row { width: 100%; position: relative; }
 .page-designer .pd-grid .pd-row .pd-drop-area { width: 100%; min-height: 150px; }
 .page-designer .pd-grid .pd-row:after { content: '.'; clear: both; display: block; visibility: hidden; height: 0; }
 .page-designer .pd-grid .pd-row .pd-col[class*="pd-col-"] { float: left; min-height: 140px; margin: 5px; border: 1px solid #969696; background: #fff; }
-.page-designer .pd-grid .pd-row .pd-col.pd-col-1 { width: calc((100% / 12 * 1) - 10px); }
+.page-designer .pd-grid .pd-row .pd-col.pd-col-1 { min-width: 90px; width: calc((100% / 12 * 1) - 10px); }
 .page-designer .pd-grid .pd-row .pd-col.pd-col-2 { width: calc((100% / 12 * 2) - 10px); }
 .page-designer .pd-grid .pd-row .pd-col.pd-col-3 { width: calc((100% / 12 * 3) - 10px); }
 .page-designer .pd-grid .pd-row .pd-col.pd-col-4 { width: calc((100% / 12 * 4) - 10px); }
