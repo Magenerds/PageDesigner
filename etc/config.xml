@@ -12,12 +12,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <dev>
-            <js>
-                <minify_files>1</minify_files>
-                <minify_exclude>
-                    /Magenerds_PageDesigner/js/vendor/
-                </minify_exclude>
-            </js>
             <!-- temporary solution until https://github.com/magento/magento2/issues/8552 is fixed-->
             <css>
                 <minify_exclude>
