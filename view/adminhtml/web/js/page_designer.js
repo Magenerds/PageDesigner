@@ -44,6 +44,30 @@ define([
         };
     };
 
+    // override TinyMCE 'setup' function for fix PageDesigner and WYSIWYG editor bug
+    tinyMceWysiwygSetup.prototype.setup = function (mode) {
+        if (this.config.widget_plugin_src) {
+            tinyMCE.PluginManager.load('magentowidget', this.config.widget_plugin_src);
+        }
+
+        if (this.config.plugins) {
+            this.config.plugins.each(function (plugin) {
+                tinyMCE.PluginManager.load(plugin.name, plugin.src);
+            });
+        }
+
+        /**
+         * Magento 2 Core Bug
+         * Load TinyMce Editor in dom
+         * BugFix for PageDesigner
+         */
+        if (jQuery.isReady) {
+            tinyMCE.dom.Event.domLoaded = true;
+        }
+
+        tinyMCE.init(this.getSettings(mode));
+    };
+
     // preserve original function
     if (!MediabrowserUtility.openDialog_original) {
         MediabrowserUtility.openDialog_original = MediabrowserUtility.openDialog;
