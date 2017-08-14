@@ -39,7 +39,7 @@ interface Constants
      *
      * @type string
      */
-    const BASE64_PREFIX = '>>>BASE64>>>';
+    const BASE64_PREFIX = '---BASE64---';
 
     /**
      * Attribute name for page designer json
