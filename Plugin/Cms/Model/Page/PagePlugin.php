@@ -9,8 +9,11 @@
 
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Page;
 
+use Magenerds\PageDesigner\Constants;
 use Magento\Cms\Api\Data\PageInterface;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
+use Magento\Cms\Model\Page;
+use Magento\Cms\Model\ResourceModel\Page as PageResource;
 
 /**
  * Class PagePlugin
@@ -43,13 +46,14 @@ final class PagePlugin
     /**
      * Manipulates the Page entity before it is saved
      *
-     * @param PageInterface $page
+     * @param PageResource $pageResource
+     * @param PageInterface|Page $page
      * @param array $arguments
      */
-    public function beforeSave(PageInterface $page, ... $arguments) // NOSONAR
+    public function beforeSave(PageResource $pageResource, Page $page, ... $arguments) // NOSONAR
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $json = $page->getPageDesignerJson();
+        $json = $page->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
 
         if (strlen(trim($json)) > 0) {
             $page->setContent($this->htmlRenderer->toHtml($json));
