@@ -25,7 +25,7 @@ interface Constants
      *
      * @type string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '2.0.1';
 
     /**
      * Defines the default grid size

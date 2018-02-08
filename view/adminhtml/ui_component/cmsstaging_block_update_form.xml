@@ -31,13 +31,14 @@
             </argument>
         </field>
         <!-- page designer -->
-        <field name="page-designer">
+        <field name="page-designer" formElement="component">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string"/>
                     <item name="source" xsi:type="string">block</item>
                     <item name="dataScope" xsi:type="string">page_designer_json</item>
-                    <item name="formElement" xsi:type="string">page_designer</item>
+                    <item name="component" xsi:type="string">Magenerds_PageDesigner/js/page_designer</item>
+                    <item name="class" xsi:type="string">Magenerds\PageDesigner\Component\PageDesigner</item>
                 </item>
             </argument>
         </field>
