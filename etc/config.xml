@@ -16,6 +16,7 @@
             <css>
                 <minify_exclude>
                     /Magenerds_PageDesigner/css/pd-ui.css
+                    /tiny_mce/
                 </minify_exclude>
             </css>
         </dev>
