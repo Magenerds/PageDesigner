@@ -15,7 +15,7 @@
             <module name="Magento_Backend"/>
             <module name="Magento_Cms"/>
             <module name="Magento_Ui"/>
-            <module name="Magento_Widgets"/>
+            <module name="Magento_Widget"/>
             <module name="Magento_CmsStaging"/>
         </sequence>
     </module>
