@@ -33,7 +33,7 @@
     </type>
 
     <type name="Magento\Cms\Model\Block\DataProvider">
-        <plugin name="Magenerds_PageDesigner::injectPageHtmlIntoJson"
+        <plugin name="Magenerds_PageDesigner::injectBlockHtmlIntoJson"
                 type="Magenerds\PageDesigner\Plugin\Cms\Model\Block\DataProviderPlugin" sortOrder="100"/>
     </type>
 
