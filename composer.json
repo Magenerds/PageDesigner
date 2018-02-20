@@ -2,7 +2,7 @@
   "name": "magenerds/pagedesigner",
   "description": "This module lets you edit cms pages easily with drag and drop",
   "require": {
-    "magento/framework": "^100.0.0|^101.0.0",
+    "magento/framework": "^101.0.0",
     "magenerds/dashboard": "^1.0"
   },
   "type": "magento2-module",
