@@ -11,14 +11,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <dev>
-            <!-- temporary solution until https://github.com/magento/magento2/issues/8552 is fixed-->
-            <css>
-                <minify_exclude>
-                    /Magenerds_PageDesigner/css/pd-ui.css
-                </minify_exclude>
-            </css>
-        </dev>
         <pagedesigner>
             <general>
                 <css_classes_column>pd-highlight</css_classes_column>

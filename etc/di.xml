@@ -46,4 +46,10 @@
         <plugin name="Magenerds_PageDesigner::widgetDecodeBackend"
                 type="Magenerds\PageDesigner\Plugin\Block\WidgetOptionsPlugin"/>
     </type>
+
+    <!-- needed for tubalmartin/cssmin < v2.4.8-p7 -->
+    <type name="Magento\Framework\View\Asset\Minification">
+        <plugin name="Magenerds_PageDesigner::excludeCssFromMinification"
+                type="Magenerds\PageDesigner\Plugin\View\ExcludeCssFromMinification"/>
+    </type>
 </config>
