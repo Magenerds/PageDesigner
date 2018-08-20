@@ -10,7 +10,6 @@
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Block;
 
 use Magenerds\PageDesigner\Constants;
-use Magento\Cms\Api\Data\BlockInterface;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
 use Magento\Cms\Model\Block;
 use Magento\Cms\Model\ResourceModel\Block as BlockResource;
@@ -47,7 +46,7 @@ final class BlockPlugin
      * Manipulates the Block entity before it is saved
      *
      * @param BlockResource $blockResource
-     * @param BlockInterface|Block $block
+     * @param Block $block
      * @param array $arguments
      */
     public function beforeSave(BlockResource $blockResource, Block $block, ... $arguments) // NOSONAR
