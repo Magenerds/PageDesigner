@@ -27,7 +27,7 @@
                 type="Magenerds\PageDesigner\Plugin\Cms\Model\Page\PagePlugin" sortOrder="100"/>
     </type>
 
-    <type name="Magento\Cms\Model\Block">
+    <type name="Magento\Cms\Model\ResourceModel\Block">
         <plugin name="Magenerds_PageDesigner::cmsBlockRenderJson"
                 type="Magenerds\PageDesigner\Plugin\Cms\Model\Block\BlockPlugin" sortOrder="100"/>
     </type>

@@ -10,7 +10,6 @@
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Page;
 
 use Magenerds\PageDesigner\Constants;
-use Magento\Cms\Api\Data\PageInterface;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
 use Magento\Cms\Model\Page;
 use Magento\Cms\Model\ResourceModel\Page as PageResource;
@@ -47,7 +46,7 @@ final class PagePlugin
      * Manipulates the Page entity before it is saved
      *
      * @param PageResource $pageResource
-     * @param PageInterface|Page $page
+     * @param Page $page
      * @param array $arguments
      */
     public function beforeSave(PageResource $pageResource, Page $page, ... $arguments) // NOSONAR

@@ -9,8 +9,10 @@
 
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Block;
 
-use Magento\Cms\Api\Data\BlockInterface;
+use Magenerds\PageDesigner\Constants;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
+use Magento\Cms\Model\Block;
+use Magento\Cms\Model\ResourceModel\Block as BlockResource;
 
 /**
  * Class BlockPlugin
@@ -43,13 +45,14 @@ final class BlockPlugin
     /**
      * Manipulates the Block entity before it is saved
      *
-     * @param BlockInterface $block
+     * @param BlockResource $blockResource
+     * @param Block $block
      * @param array $arguments
      */
-    public function beforeSave(BlockInterface $block, ... $arguments) // NOSONAR
+    public function beforeSave(BlockResource $blockResource, Block $block, ... $arguments) // NOSONAR
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $json = $block->getPageDesignerJson();
+        $json = $block->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
 
         if (strlen(trim($json)) > 0) {
             $block->setContent($this->htmlRenderer->toHtml($json));
