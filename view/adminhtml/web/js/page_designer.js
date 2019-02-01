@@ -9,7 +9,7 @@
 /**
  * Page Designer
  *
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
@@ -302,7 +302,7 @@ define([
                     "onColumnContentSet": function (column, currentContent, callback) {
                         // set editor as a block element to be able to access it
                         var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
-                        
+
                         if (wysControl.is(':hidden')) {
                             wysControl.css({
                                 display: 'block',

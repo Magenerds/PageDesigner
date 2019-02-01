@@ -16,7 +16,7 @@ use Magento\Backend\App\Action;
  *
  * @package     Magenerds\PageDesigner\Controller\Adminhtml\PageDesigner
  * @file        SettingsAbstract.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */

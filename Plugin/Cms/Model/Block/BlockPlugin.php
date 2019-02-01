@@ -19,7 +19,7 @@ use Magento\Cms\Model\ResourceModel\Block as BlockResource;
  *
  * @package     Magenerds\PageDesigner\Plugin\Cms\Model\Block
  * @file        BlockPlugin.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */

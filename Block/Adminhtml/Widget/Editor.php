@@ -21,7 +21,7 @@ use Magenerds\PageDesigner\Constants;
  *
  * @package     Magenerds\PageDesigner\Block\Adminhtml\Widget
  * @file        Editor.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Philipp Steinkopff <p.steinkopff@techdivision.com>
  * @author      Simon Sippert <s.sippert@techdivision.com>

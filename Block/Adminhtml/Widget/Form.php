@@ -14,7 +14,7 @@ namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
  *
  * @package     Magenerds\PageDesigner\Block\Adminhtml\Widget
  * @file        Form.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
