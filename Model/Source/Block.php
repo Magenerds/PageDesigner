@@ -18,7 +18,7 @@ use Magenerds\PageDesigner\Constants;
  *
  * @package     Magenerds\PageDesigner\Model\Source
  * @file        Block.php
- * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */

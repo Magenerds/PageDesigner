@@ -16,7 +16,7 @@ use Magento\Ui\Component\Form\Element\AbstractElement;
  *
  * @package     Magenerds\PageDesigner\Component
  * @file        PageDesigner.php
- * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */

@@ -16,7 +16,7 @@ use Magenerds\PageDesigner\Constants;
  *
  * @package     Magenerds\PageDesigner\Utils
  * @file        PageDesignerUtil.php
- * @copyright   Copyright (c) 2019 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
