@@ -9,9 +9,9 @@
 
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Page;
 
-use Magento\Cms\Model\Page\DataProvider;
 use Magenerds\PageDesigner\Constants;
 use Magenerds\PageDesigner\Utils\PageDesignerUtil;
+use Magento\Cms\Model\Page\DataProvider;
 
 /**
  * Class DataProviderPlugin
@@ -27,10 +27,11 @@ final class DataProviderPlugin
     /**
      * @var PageDesignerUtil
      */
-    private $pageDesignerUtil;
+    protected $pageDesignerUtil;
 
     /**
      * DataProviderPlugin constructor.
+     *
      * @param PageDesignerUtil $pageDesignerUtil
      */
     public function __construct(PageDesignerUtil $pageDesignerUtil)
@@ -39,13 +40,17 @@ final class DataProviderPlugin
     }
 
     /**
-     * Manipulates return value of getData
+     * Manipulate return value of getData
      *
      * @param DataProvider $dataProvider
      * @param array $result
      * @return array
      */
-    public function afterGetData(DataProvider $dataProvider, $result) // NOSONAR
+    public function afterGetData(
+        /** @noinspection PhpUnusedParameterInspection */
+        DataProvider $dataProvider, // NOSONAR
+        $result
+    )
     {
         if (is_array($result)) {
             foreach ($result as &$data) {

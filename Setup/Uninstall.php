@@ -9,10 +9,11 @@
 
 namespace Magenerds\PageDesigner\Setup;
 
+use Magenerds\PageDesigner\Constants;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\SetupInterface;
 use Magento\Framework\Setup\UninstallInterface;
-use Magenerds\PageDesigner\Constants;
 
 /**
  * Class Uninstall
@@ -28,11 +29,10 @@ class Uninstall implements UninstallInterface
     /**
      * Invoked when remove-data flag is set during module uninstall.
      *
-     * @param SchemaSetupInterface $setup
+     * @param SetupInterface|SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @return void
      */
-    public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context) //NOSONAR
+    public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context) // NOSONAR
     {
         $setup->startSetup();
 
@@ -46,10 +46,10 @@ class Uninstall implements UninstallInterface
     /**
      * Drop the page designer column
      *
-     * @param SchemaSetupInterface $setup
+     * @param SetupInterface|SchemaSetupInterface $setup
      * @param string $table
      */
-    private function dropPageDesignerColumn(SchemaSetupInterface $setup, $table)
+    protected function dropPageDesignerColumn(SchemaSetupInterface $setup, $table)
     {
         $connection = $setup->getConnection();
         $connection->dropColumn($table, Constants::ATTR_PAGE_DESIGNER_JSON);

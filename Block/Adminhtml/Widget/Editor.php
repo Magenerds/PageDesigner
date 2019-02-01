@@ -9,12 +9,12 @@
 
 namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
 
+use Magenerds\PageDesigner\Constants;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Element;
 use Magento\Cms\Model\Wysiwyg\Config;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Factory;
-use Magenerds\PageDesigner\Constants;
 
 /**
  * Class Editor
@@ -29,18 +29,14 @@ use Magenerds\PageDesigner\Constants;
 class Editor extends Element
 {
     /**
-     * Holds the wysiwyg configuration
-     *
      * @var Config
      */
-    protected $_wysiwygConfig;
+    protected $wysiwygConfig;
 
     /**
-     * Holds the factory element
-     *
      * @var Factory
      */
-    protected $_factoryElement;
+    protected $factoryElement;
 
     /**
      * Editor constructor.
@@ -57,9 +53,9 @@ class Editor extends Element
         $data = []
     )
     {
-        $this->_factoryElement = $factoryElement;
-        $this->_wysiwygConfig = $wysiwygConfig;
         parent::__construct($context, $data);
+        $this->factoryElement = $factoryElement;
+        $this->wysiwygConfig = $wysiwygConfig;
     }
 
     /**
@@ -71,23 +67,27 @@ class Editor extends Element
     public function prepareElementHtml(AbstractElement $element)
     {
         // create editor
-        $editor = $this->_factoryElement->create('editor', ['data' => $element->getData()])
+        /** @noinspection PhpUndefinedMethodInspection */
+        $editor = $this->factoryElement->create('editor', ['data' => $element->getData()])
             ->setLabel('')
             ->setForm($element->getForm())
             ->setWysiwyg(true)
-            ->setConfig($this->_wysiwygConfig->getConfig([
+            ->setConfig($this->wysiwygConfig->getConfig([
                 'skip_widgets' => [Constants::WIDGET_TYPE]
             ]));
 
         // add required class
+        /** @noinspection PhpUndefinedMethodInspection */
         if ($element->getRequired()) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $editor->addClass('required-entry');
         }
 
         // set element html
+        /** @noinspection PhpUndefinedMethodInspection */
         $element->setData(
             'after_element_html',
-            $this->_getAfterElementHtml() .
+            $this->getAfterElementHtml() .
             str_replace('jQuery(window).on("load", ', 'jQuery(', $editor->getElementHtml())
         );
 
@@ -96,11 +96,11 @@ class Editor extends Element
     }
 
     /**
-     * Gets element's after html
+     * Get element's after html
      *
      * @return string
      */
-    protected function _getAfterElementHtml()
+    protected function getAfterElementHtml()
     {
         return <<<HTML
     <style>

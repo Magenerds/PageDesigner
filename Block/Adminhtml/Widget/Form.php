@@ -9,6 +9,9 @@
 
 namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
 
+use Magento\Framework\Data\Form as DataForm;
+use Magento\Widget\Block\Adminhtml\Widget\Form as BaseForm;
+
 /**
  * Class Form
  *
@@ -18,16 +21,15 @@ namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
-class Form extends \Magento\Widget\Block\Adminhtml\Widget\Form
+class Form extends BaseForm
 {
     /**
      * Form with widget to select
-     *
-     * @return void
      */
     protected function _prepareForm()
     {
-        /** @var \Magento\Framework\Data\Form $form */
+        /** @var DataForm $form */
+        /** @noinspection PhpUnhandledExceptionInspection */
         $form = $this->_formFactory->create();
 
         // define field set
@@ -52,9 +54,13 @@ class Form extends \Magento\Widget\Block\Adminhtml\Widget\Form
         );
 
         // set form information
+        /** @noinspection PhpUndefinedMethodInspection */
         $form->setUseContainer(true);
+        /** @noinspection PhpUndefinedMethodInspection */
         $form->setId('widget_options_form' . '_' . $widgetKey);
+        /** @noinspection PhpUndefinedMethodInspection */
         $form->setMethod('post');
+        /** @noinspection PhpUndefinedMethodInspection */
         $form->setAction($this->getUrl('adminhtml/*/buildWidget'));
         $this->setForm($form);
     }

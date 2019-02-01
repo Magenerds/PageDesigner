@@ -13,7 +13,7 @@
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
-.page-designer { display: block; padding: 30px 40px; overflow-x: scroll; width:100%; background: #fff; }
+.page-designer { display: block; padding: 30px 40px; overflow-x: scroll; width: 100%; background: #fff; }
 .page-designer a { cursor: pointer; display: inline-block; color: #adadad; transition: color ease 0.3s, background ease 0.3s; }
 .page-designer a:hover, .page-designer a.active { color: #000; text-decoration: none; }
 .page-designer .pd-icon { white-space: nowrap; padding: 4px 2px; display: block; font-size: 120%; }

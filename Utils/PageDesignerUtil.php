@@ -57,7 +57,7 @@ class PageDesignerUtil
     }
 
     /**
-     * Check for {@link Constants::ATTR_PAGE_DESIGNER_JSON} is present or not in the given array
+     * Check if {@link Constants::ATTR_PAGE_DESIGNER_JSON} is present or not in the given array
      *
      * @param $data
      * @return bool

@@ -28,7 +28,7 @@ class Column implements ArrayInterface
      *
      * @var ScopeConfigInterface
      */
-    protected $_scopeConfig;
+    protected $scopeConfig;
 
     /**
      * Column constructor.
@@ -37,7 +37,7 @@ class Column implements ArrayInterface
      */
     public function __construct(ScopeConfigInterface $scopeConfig)
     {
-        $this->_scopeConfig = $scopeConfig;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -56,7 +56,7 @@ class Column implements ArrayInterface
         ];
 
         // get classes configuration
-        foreach (explode(',', $this->_scopeConfig->getValue('pagedesigner/general/css_classes_column')) as $class) {
+        foreach (explode(',', $this->scopeConfig->getValue('pagedesigner/general/css_classes_column')) as $class) {
             $values[] = [
                 'label' => $class,
                 'value' => $class,

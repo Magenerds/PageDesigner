@@ -9,11 +9,12 @@
 
 namespace Magenerds\PageDesigner\Block\Widget;
 
+use Exception;
+use Magenerds\PageDesigner\Constants;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Widget\Block\BlockInterface;
-use Magenerds\PageDesigner\Constants;
 
 /**
  * Class Editor
@@ -27,11 +28,9 @@ use Magenerds\PageDesigner\Constants;
 class Editor extends Template implements BlockInterface
 {
     /**
-     * Defines the filter provider
-     *
      * @var FilterProvider
      */
-    protected $_filterProvider;
+    protected $filterProvider;
 
     /**
      * Editor constructor.
@@ -46,14 +45,15 @@ class Editor extends Template implements BlockInterface
         array $data = []
     )
     {
-        $this->_filterProvider = $filterProvider;
         parent::__construct($context, $data);
+        $this->filterProvider = $filterProvider;
     }
 
     /**
      * Prepare HTML content
      *
      * @return string
+     * @throws Exception
      */
     protected function _toHtml()
     {
@@ -67,6 +67,6 @@ class Editor extends Template implements BlockInterface
         }
 
         // output content
-        return $this->_filterProvider->getPageFilter()->filter($content);
+        return $this->filterProvider->getPageFilter()->filter($content);
     }
 }

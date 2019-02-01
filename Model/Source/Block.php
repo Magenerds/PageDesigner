@@ -9,9 +9,10 @@
 
 namespace Magenerds\PageDesigner\Model\Source;
 
-use Magento\Catalog\Model\Category\Attribute\Source\Page;
-use Magento\Cms\Model\ResourceModel\Block\Collection;
 use Magenerds\PageDesigner\Constants;
+use Magento\Catalog\Model\Category\Attribute\Source\Page;
+use Magento\Cms\Model\Block as CmsBlock;
+use Magento\Cms\Model\ResourceModel\Block\Collection;
 
 /**
  * Class Block
@@ -32,6 +33,7 @@ class Block extends Page
         // check previously defined options
         if (!$this->_options) {
             /** @var $collection Collection */
+            /** @noinspection PhpUndefinedMethodInspection */
             $collection = $this->_blockCollectionFactory->create();
 
             // only display blocks which have a page designer attached
@@ -45,7 +47,7 @@ class Block extends Page
                 ]
             ];
 
-            /** @var $entry \Magento\Cms\Model\Block */
+            /** @var $entry CmsBlock */
             foreach ($collection as $entry) {
                 // add to options
                 $this->_options[] = [

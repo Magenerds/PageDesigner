@@ -9,8 +9,8 @@
 
 namespace Magenerds\PageDesigner\Plugin\Block;
 
-use Magento\Widget\Block\Adminhtml\Widget\Options;
 use Magenerds\PageDesigner\Constants;
+use Magento\Widget\Block\Adminhtml\Widget\Options;
 
 /**
  * Class WidgetOptionsPlugin
@@ -31,6 +31,7 @@ final class WidgetOptionsPlugin
     public function beforeAddFields(Options $subject)
     {
         // get widget values
+        /** @noinspection PhpUndefinedMethodInspection */
         $params = $subject->getWidgetValues();
 
         // iterate over values
@@ -43,6 +44,7 @@ final class WidgetOptionsPlugin
         }
 
         // set decoded values
+        /** @noinspection PhpUndefinedMethodInspection */
         $subject->setWidgetValues($params);
     }
 }

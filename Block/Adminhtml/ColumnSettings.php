@@ -25,20 +25,20 @@ class ColumnSettings extends SettingsAbstract
     /**
      * Add fields to main fieldset
      *
-     * @return self
+     * @return $this
      */
     public function addFields()
     {
         // add field
-        $this->_addField(new DataObject([
+        $this->addField(new DataObject([
             'key' => 'css_class',
             'type' => 'select',
-            'values' => $this->_cssClassColumnModel->toOptionArray(),
+            'values' => $this->cssClassColumnModel->toOptionArray(),
             'label' => __('CSS Class'),
         ]));
 
         // add save button
-        $this->_addField(new DataObject([
+        $this->addField(new DataObject([
             'key' => 'save',
             'type' => 'note',
             'label' => ' ',

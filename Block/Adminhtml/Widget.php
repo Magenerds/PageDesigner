@@ -11,6 +11,7 @@ namespace Magenerds\PageDesigner\Block\Adminhtml;
 
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
+use Magento\Widget\Block\Adminhtml\Widget as BaseWidget;
 
 /**
  * Class Widget
@@ -21,11 +22,9 @@ use Magento\Framework\Registry;
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
-class Widget extends \Magento\Widget\Block\Adminhtml\Widget
+class Widget extends BaseWidget
 {
     /**
-     * Holds the registry
-     *
      * @var Registry
      */
     protected $registry;
@@ -43,8 +42,8 @@ class Widget extends \Magento\Widget\Block\Adminhtml\Widget
         array $data = []
     )
     {
-        $this->registry = $registry;
         parent::__construct($context, $data);
+        $this->registry = $registry;
     }
 
     /**

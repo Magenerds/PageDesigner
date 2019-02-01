@@ -10,8 +10,8 @@
 namespace Magenerds\PageDesigner\Plugin\Model;
 
 use Closure;
-use Magento\Widget\Model\Widget;
 use Magenerds\PageDesigner\Constants;
+use Magento\Widget\Model\Widget;
 
 /**
  * Class WidgetPlugin
@@ -35,7 +35,8 @@ final class WidgetPlugin
      * @return mixed
      */
     public function aroundGetWidgetDeclaration(
-        Widget $subject,
+        /** @noinspection PhpUnusedParameterInspection */
+        Widget $subject, // NOSONAR
         Closure $proceed,
         $type,
         $params = [],

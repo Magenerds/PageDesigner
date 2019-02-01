@@ -9,6 +9,8 @@
 
 namespace Magenerds\PageDesigner\Model;
 
+use Magento\Framework\App\Arguments\ValidationState as BaseValidationState;
+
 /**
  * Class ValidationState
  *
@@ -18,7 +20,7 @@ namespace Magenerds\PageDesigner\Model;
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
-class ValidationState extends \Magento\Framework\App\Arguments\ValidationState
+class ValidationState extends BaseValidationState
 {
     /**
      * Retrieve current validation state

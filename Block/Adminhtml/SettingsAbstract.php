@@ -9,17 +9,19 @@
 
 namespace Magenerds\PageDesigner\Block\Adminhtml;
 
+use Magenerds\PageDesigner\Model\Source\CssClass\Column;
+use Magenerds\PageDesigner\Model\Source\CssClass\Row;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Fieldset;
+use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
 use Magento\Framework\Data\FormFactory;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Option\ArrayPool;
 use Magento\Framework\Registry;
-use Magenerds\PageDesigner\Model\Source\CssClass\Column;
-use Magenerds\PageDesigner\Model\Source\CssClass\Row;
 
 /**
  * Class SettingsAbstract
@@ -29,6 +31,9 @@ use Magenerds\PageDesigner\Model\Source\CssClass\Row;
  * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
+ *
+ * @method array getSettings()
+ * @method $this setSettings(array $settings)
  */
 abstract class SettingsAbstract extends Generic
 {
@@ -37,31 +42,26 @@ abstract class SettingsAbstract extends Generic
      *
      * @var string
      */
-    protected $_defaultElementType = 'text';
+    protected $defaultElementType = 'text';
 
     /**
-     * Holds the source models
-     *
      * @var ArrayPool
      */
-    protected $_sourceModelPool;
+    protected $sourceModelPool;
 
     /**
-     * Holds the css class model for columns.
-     *
      * @var Column
      */
-    protected $_cssClassColumnModel;
+    protected $cssClassColumnModel;
 
     /**
-     * Holds the css class model for rows.
-     *
      * @var Row
      */
-    protected $_cssClassRowModel;
+    protected $cssClassRowModel;
 
     /**
      * SettingsAbstract constructor.
+     *
      * @param Context $context
      * @param Registry $registry
      * @param FormFactory $formFactory
@@ -80,19 +80,21 @@ abstract class SettingsAbstract extends Generic
         array $data = []
     )
     {
-        $this->_cssClassColumnModel = $cssClassColumnModel;
-        $this->_cssClassRowModel = $cssClassRowModel;
-        $this->_sourceModelPool = $sourceModelPool;
         parent::__construct($context, $registry, $formFactory, $data);
+        $this->cssClassColumnModel = $cssClassColumnModel;
+        $this->cssClassRowModel = $cssClassRowModel;
+        $this->sourceModelPool = $sourceModelPool;
     }
 
     /**
      * Prepare Form and values according to specified type
      *
-     * @return self
+     * @return $this
+     * @throws LocalizedException
      */
     protected function _prepareForm()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->getForm()->setUseContainer(true);
         $this->addFields();
         return $this;
@@ -102,6 +104,7 @@ abstract class SettingsAbstract extends Generic
      * Form getter/instantiation
      *
      * @return Form
+     * @throws LocalizedException
      */
     public function getForm()
     {
@@ -109,6 +112,7 @@ abstract class SettingsAbstract extends Generic
             return $this->_form;
         }
         /** @var Form $form */
+        /** @noinspection PhpUnhandledExceptionInspection */
         $form = $this->_formFactory->create();
         $this->setForm($form);
         return $form;
@@ -117,7 +121,7 @@ abstract class SettingsAbstract extends Generic
     /**
      * Add fields to main fieldset
      *
-     * @return self
+     * @return $this
      */
     public function addFields()
     {
@@ -129,13 +133,16 @@ abstract class SettingsAbstract extends Generic
      *
      * @param DataObject $parameter
      * @return AbstractElement
+     * @throws LocalizedException
      */
-    protected function _addField($parameter)
+    protected function addField($parameter)
     {
         $fieldset = $this->getMainFieldset();
 
         // prepare element data with values (either from request of from default values)
+        /** @noinspection PhpUndefinedMethodInspection */
         $fieldName = $parameter->getKey();
+        /** @noinspection PhpUndefinedMethodInspection */
         $data = [
             'name' => $fieldName,
             'label' => __($parameter->getLabel()),
@@ -145,14 +152,16 @@ abstract class SettingsAbstract extends Generic
         ];
 
         // check for values
+        /** @noinspection PhpUndefinedMethodInspection */
         if ($options = $parameter->getOptions()) {
             $data = array_merge($data, $options);
         }
 
         // get data
-        $data['value'] = $this->_getValue($parameter, $fieldName);
+        $data['value'] = $this->getValue($parameter, $fieldName);
 
         // prepare element dropdown values
+        /** @noinspection PhpUndefinedMethodInspection */
         if ($values = $parameter->getValues()) {
             // dropdown options are specified in configuration
             $data['values'] = [];
@@ -160,21 +169,26 @@ abstract class SettingsAbstract extends Generic
                 $data['values'][] = ['label' => __($option['label']), 'value' => $option['value']];
             }
             // otherwise, a source model is specified
-        } elseif ($sourceModel = $parameter->getSourceModel()) {
-            $data['values'] = $this->_sourceModelPool->get($sourceModel)->toOptionArray();
+        } /** @noinspection PhpUndefinedMethodInspection */
+        elseif ($sourceModel = $parameter->getSourceModel()) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $data['values'] = $this->sourceModelPool->get($sourceModel)->toOptionArray();
         }
 
         // prepare field type or renderer
+        /** @var RendererInterface $fieldRenderer */
         $fieldRenderer = null;
+        /** @noinspection PhpUndefinedMethodInspection */
         $fieldType = $parameter->getType();
 
         // render
-        if ($fieldType && $this->_isClassName($fieldType)) {
+        if ($fieldType && $this->isClassName($fieldType)) {
             $fieldRenderer = $this->getLayout()->createBlock($fieldType);
-            $fieldType = $this->_defaultElementType;
+            $fieldType = $this->defaultElementType;
         }
 
         // instantiate field and render html
+        /** @noinspection PhpUndefinedMethodInspection */
         $field = $fieldset->addField($this->getMainFieldsetHtmlId() . '_' . $fieldName, $fieldType, $data);
         if ($fieldRenderer) {
             $field->setRenderer($fieldRenderer);
@@ -186,7 +200,8 @@ abstract class SettingsAbstract extends Generic
     /**
      * Fieldset getter/instantiation
      *
-     * @return Fieldset
+     * @return Fieldset|mixed
+     * @throws LocalizedException
      */
     public function getMainFieldset()
     {
@@ -194,7 +209,9 @@ abstract class SettingsAbstract extends Generic
             return $fieldset;
         }
         $mainFieldsetHtmlId = 'settings_fieldset';
+        /** @noinspection PhpUndefinedMethodInspection */
         $this->setMainFieldsetHtmlId($mainFieldsetHtmlId);
+        /** @noinspection PhpUnhandledExceptionInspection */
         $fieldset = $this->getForm()->addFieldset(
             $mainFieldsetHtmlId,
             ['class' => 'fieldset-wide fieldset-settings']
@@ -205,13 +222,13 @@ abstract class SettingsAbstract extends Generic
     }
 
     /**
-     * Gets current value of a string
+     * Get current value of a string
      *
      * @param $object
      * @param $key
      * @return mixed
      */
-    private function _getValue($object, $key)
+    protected function getValue($object, $key)
     {
         // get values
         $values = $this->getSettings();
@@ -225,16 +242,17 @@ abstract class SettingsAbstract extends Generic
         }
 
         // return object's value
+        /** @noinspection PhpUndefinedMethodInspection */
         return $object->getValue();
     }
 
     /**
-     * Checks whether $fieldType is a class name of custom renderer, and not just a type of input element
+     * Check whether $fieldType is a class name of custom renderer, and not just a type of input element
      *
      * @param string $fieldType
      * @return bool
      */
-    protected function _isClassName($fieldType)
+    protected function isClassName($fieldType)
     {
         return preg_match('/[A-Z]/', $fieldType) > 0;
     }

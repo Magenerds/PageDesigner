@@ -8,8 +8,8 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="\Magento\Widget\Block\Adminhtml\Widget\Form"
-                type="\Magenerds\PageDesigner\Block\Adminhtml\Widget\Form"/>
+    <preference for="Magento\Widget\Block\Adminhtml\Widget\Form"
+                type="Magenerds\PageDesigner\Block\Adminhtml\Widget\Form"/>
     <preference for="Magento\Framework\App\Arguments\ValidationState"
                 type="Magenerds\PageDesigner\Model\ValidationState"/>
     <preference for="Magenerds\PageDesigner\Utils\HtmlRendererInterface"
