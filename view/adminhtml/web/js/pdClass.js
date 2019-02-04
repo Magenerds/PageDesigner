@@ -568,6 +568,7 @@ define([
             // iterate over all grid modes
             jQuery(pd.meta.gridModes).each(function (i, mode) {
                 // set grid size
+                // noinspection JSAssignmentUsedAsCondition
                 if (gridSize = pd.getGridSize(column, mode)) {
                     colJson.gridSize[mode] = gridSize;
                 }

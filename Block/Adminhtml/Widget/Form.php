@@ -9,6 +9,7 @@
 
 namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
 
+use Magenerds\PageDesigner\Block\Adminhtml\Widget;
 use Magento\Framework\Data\Form as DataForm;
 use Magento\Widget\Block\Adminhtml\Widget\Form as BaseForm;
 
@@ -36,7 +37,7 @@ class Form extends BaseForm
         $fieldSet = $form->addFieldset('base_fieldset', ['legend' => __('Widget')]);
 
         // retrieve widget key
-        $widgetKey = $this->_coreRegistry->registry('widget_form_key');
+        $widgetKey = $this->_coreRegistry->registry(Widget::REGISTRY_KEY_WIDGET_FORM_KEY);
 
         // add new field
         $fieldSet->addField(

@@ -10,6 +10,7 @@
 namespace Magenerds\PageDesigner\Plugin\Model;
 
 use Closure;
+use Magenerds\PageDesigner\Block\Widget\Editor;
 use Magenerds\PageDesigner\Constants;
 use Magento\Widget\Model\Widget;
 
@@ -44,7 +45,7 @@ final class WidgetPlugin
     )
     {
         // check for editor widget
-        if ($type === Constants::WIDGET_TYPE) {
+        if ($type === Editor::class) {
             // iterate over values
             foreach ($params as $name => &$value) {
                 // check if value is a string

@@ -56,13 +56,6 @@ interface Constants
     const ATTR_CONTENT = 'content';
 
     /**
-     * Alias for PageDesigner wysiwyg widget
-     *
-     * @type string
-     */
-    const WIDGET_TYPE = 'Magenerds\PageDesigner\Block\Widget\Editor';
-
-    /**
      * A list of tables that must have the column page_designer_json
      *
      * @type array

@@ -23,62 +23,6 @@ define([
 ], function (jQuery, Abstract, PageDesigner) {
     'use strict'; // NOSONAR
 
-    // preserve original function
-    if (!widgetTools.openDialog_original) {
-        widgetTools.openDialog_original = widgetTools.openDialog;
-    }
-
-    // override widget dialog opener, magento doesn't allow opening 2+ instances per default
-    widgetTools.openDialog = function () {
-        // fake dialog to be not open yet
-        this.dialogOpened = false;
-
-        // open another instance
-        this.openDialog_original.apply(this, arguments);
-
-        // set close function to only close current window
-        this.dialogWindow = {
-            modal: function () {
-                jQuery('.modals-wrapper .modal-slide._show .action-close').last().trigger('click');
-            }
-        };
-    };
-
-    // override TinyMCE 'setup' function for fix PageDesigner and WYSIWYG editor bug
-    tinyMceWysiwygSetup.prototype.setup = function (mode) {
-        if (this.config.widget_plugin_src) {
-            tinyMCE.PluginManager.load('magentowidget', this.config.widget_plugin_src);
-        }
-
-        if (this.config.plugins) {
-            this.config.plugins.each(function (plugin) {
-                tinyMCE.PluginManager.load(plugin.name, plugin.src);
-            });
-        }
-
-        /**
-         * Magento 2 Core Bug
-         * Load TinyMce Editor in dom
-         * BugFix for PageDesigner
-         */
-        if (jQuery.isReady) {
-            tinyMCE.dom.Event.domLoaded = true;
-        }
-
-        tinyMCE.init(this.getSettings(mode));
-    };
-
-    // preserve original function
-    if (!MediabrowserUtility.openDialog_original) {
-        MediabrowserUtility.openDialog_original = MediabrowserUtility.openDialog;
-    }
-
-    // fix modal open function of media browser to not override the active window
-    MediabrowserUtility.openDialog = function () {
-        this.modal = null;
-        this.openDialog_original.apply(this, arguments);
-    };
-
     // generate class
     return Abstract.extend({
         defaults: {
@@ -109,23 +53,25 @@ define([
             });
 
             // preserve editor setup constructor
-            if (!tinyMceWysiwygSetup.prototype.initialize_original) {
-                tinyMceWysiwygSetup.prototype.initialize_original = tinyMceWysiwygSetup.prototype.initialize;
+            if (!window.wysiwygSetup.prototype.initialize_original) {
+                window.wysiwygSetup.prototype.initialize_original = window.wysiwygSetup.prototype.initialize;
             }
 
             // override original constructor
-            tinyMceWysiwygSetup.prototype.initialize = function () {
+            window.wysiwygSetup.prototype.initialize = function () {
                 // call and set back original constructor
                 this.initialize_original.apply(this, arguments);
 
                 // reset function
-                tinyMceWysiwygSetup.prototype.initialize = tinyMceWysiwygSetup.prototype.initialize_original;
-                delete tinyMceWysiwygSetup.prototype.initialize_original;
+                window.wysiwygSetup.prototype.initialize = window.wysiwygSetup.prototype.initialize_original;
+                delete window.wysiwygSetup.prototype.initialize_original;
 
                 // call import callback
-                pd.importPromise.then(function (importCallBack) {
-                    importCallBack(this);
-                }.bind(this));
+                setTimeout(function() {
+                    pd.importPromise.then(function (importCallBack) {
+                        importCallBack(this);
+                    });
+                }, 400); // FIXME
             };
 
             // call parent function
@@ -144,8 +90,7 @@ define([
             this.buildPageDesigner();
 
             // import on promise
-            this.importPromiseResolve(function (editorInstance) {
-                this.pageDesigner.editorInstance = editorInstance;
+            this.importPromiseResolve(function () {
                 this.pageDesigner.importWithPreviews(this.importData);
             }.bind(this));
         },
@@ -329,6 +274,7 @@ define([
                                 var code = preview.attr('id');
                                 if (code) {
                                     // set widget code to content
+                                    // noinspection EqualityComparisonWithCoercionJS,AmdModulesDependencies
                                     callback(column, code != '' ? Base64.idDecode(code) : '', preview);
                                 }
                             };
@@ -337,21 +283,18 @@ define([
                             if (!!column.data('pd-content')) {
                                 return column.find('.pd-col-content .pd-col-content-preview img:first-child').get(0);
                             } else {
-                                return null;
+                                return this.getWysiwygNode();
                             }
                         };
 
                         // open the widget browser
-                        wysControl.find('.mceButton.mce_magentowidget').get(0).click();
+                        wysControl.find('.action-add-widget').get(0).click();
                     }
                 }
             });
 
             // set custom import function
             this.pageDesigner.importWithPreviews = function (json) {
-                // preserve instance
-                var that = this;
-
                 // transform to string
                 if (typeof json === 'string' && json) {
                     json = JSON.parse(json);
@@ -363,7 +306,7 @@ define([
                         jQuery(row.columns).each(function (ci, column) {
                             // call widget encoder of editor plugin
                             if (column.content) {
-                                json.rows[ri].columns[ci].preview = that.editorInstance.encodeWidgets(column.content);
+                                json.rows[ri].columns[ci].preview = tinymce.activeEditor.plugins.magentowidget.encodeWidgets(column.content);
                             }
                         });
                     });

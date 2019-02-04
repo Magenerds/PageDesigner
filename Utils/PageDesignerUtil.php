@@ -9,6 +9,7 @@
 
 namespace Magenerds\PageDesigner\Utils;
 
+use Magenerds\PageDesigner\Block\Widget\Editor;
 use Magenerds\PageDesigner\Constants;
 
 /**
@@ -33,7 +34,7 @@ class PageDesignerUtil
         // build html from content
         $encodedHtml = base64_encode($html);
         $content = '{{widget type="%s" content="' . Constants::BASE64_PREFIX . '%s"}}';
-        $content = sprintf($content, Constants::WIDGET_TYPE, $encodedHtml);
+        $content = sprintf($content, Editor::class, $encodedHtml);
 
         // add to page designer object
         $object = [

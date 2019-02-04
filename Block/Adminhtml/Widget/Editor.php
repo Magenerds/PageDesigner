@@ -9,6 +9,7 @@
 
 namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
 
+use Magenerds\PageDesigner\Block\Widget\Editor as EditorBlock;
 use Magenerds\PageDesigner\Constants;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Element;
@@ -73,7 +74,7 @@ class Editor extends Element
             ->setForm($element->getForm())
             ->setWysiwyg(true)
             ->setConfig($this->wysiwygConfig->getConfig([
-                'skip_widgets' => [Constants::WIDGET_TYPE]
+                'skip_widgets' => [EditorBlock::class]
             ]));
 
         // add required class

@@ -25,6 +25,13 @@ use Magento\Widget\Block\Adminhtml\Widget as BaseWidget;
 class Widget extends BaseWidget
 {
     /**
+     * Registry key to save widget form key
+     *
+     * @var string
+     */
+    const REGISTRY_KEY_WIDGET_FORM_KEY = 'widget_form_key';
+
+    /**
      * @var Registry
      */
     protected $registry;
@@ -42,8 +49,8 @@ class Widget extends BaseWidget
         array $data = []
     )
     {
-        parent::__construct($context, $data);
         $this->registry = $registry;
+        parent::__construct($context, $data);
     }
 
     /**
@@ -58,23 +65,23 @@ class Widget extends BaseWidget
         $widgetKey = 'widget_' . uniqid();
 
         // register widget key
-        $this->registry->unregister('widget_form_key');
-        $this->registry->register('widget_form_key', $widgetKey);
+        $this->registry->unregister(static::REGISTRY_KEY_WIDGET_FORM_KEY);
+        $this->registry->register(static::REGISTRY_KEY_WIDGET_FORM_KEY, $widgetKey);
 
         // set button id and action
-        $this->buttonList->update('save', 'id', 'insert_button_' . $widgetKey);
         $this->buttonList->update('save', 'onclick', $widgetKey . '.insertWidget()');
+        $this->buttonList->update('reset', 'onclick', $widgetKey . '.closeModal()');
 
         // remove last form script
         array_pop($this->_formScripts);
 
         // add new form script
         $this->_formScripts[] = sprintf('
-            require(["mage/adminhtml/wysiwyg/widget"], function() {
-                wWidget = %s = new WysiwygWidget.Widget(%s, %s, %s, %s, %s);
+            require(["Magenerds_PageDesigner/js/wysiwyg/widget"], function(WidgetElement) {
+                new WidgetElement(%s, %s, %s, %s, %s, %s);
             });
         ',
-            $widgetKey,
+            json_encode($widgetKey),
             json_encode('widget_options_form_' . $widgetKey),
             json_encode('select_widget_type_' . $widgetKey),
             json_encode('widget_options_' . $widgetKey),

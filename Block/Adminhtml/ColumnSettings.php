@@ -10,6 +10,7 @@
 namespace Magenerds\PageDesigner\Block\Adminhtml;
 
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class ColumnSettings
@@ -26,6 +27,7 @@ class ColumnSettings extends SettingsAbstract
      * Add fields to main fieldset
      *
      * @return $this
+     * @throws LocalizedException
      */
     public function addFields()
     {
