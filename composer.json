@@ -3,7 +3,9 @@
   "description": "This module lets you edit cms pages easily with drag and drop",
   "require": {
     "magento/framework": "^100.0.0|^101.0.0|^102.0.0",
-    "magenerds/dashboard": "^1.0"
+    "magento/module-backend": "*",
+    "magento/module-cms": "*",
+    "magenerds/dashboard": "*"
   },
   "type": "magento2-module",
   "license": [

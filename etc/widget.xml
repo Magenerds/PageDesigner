@@ -11,10 +11,10 @@
     <widget id="wysiwyg_widget" class="Magenerds\PageDesigner\Block\Widget\Editor"
             placeholder_image="Magenerds_PageDesigner::images/widget_editor.png">
         <label translate="true">Wysiwyg Editor</label>
-        <description>Wysiwyg Editor</description>
+        <description translate="true">Wysiwyg Editor</description>
         <parameters>
             <parameter name="content" xsi:type="block" visible="true" required="true" sort_order="20">
-                <label>Content</label>
+                <label translate="true">Content</label>
                 <block class="Magenerds\PageDesigner\Block\Adminhtml\Widget\Editor"/>
             </parameter>
         </parameters>

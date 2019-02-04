@@ -10,7 +10,6 @@
 namespace Magenerds\PageDesigner\Block\Adminhtml\Widget;
 
 use Magenerds\PageDesigner\Block\Widget\Editor as EditorBlock;
-use Magenerds\PageDesigner\Constants;
 use Magento\Backend\Block\Template\Context;
 use Magento\Backend\Block\Widget\Form\Element;
 use Magento\Cms\Model\Wysiwyg\Config;

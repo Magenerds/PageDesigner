@@ -50,7 +50,7 @@ class Row implements ArrayInterface
         // define values
         $values = [
             [
-                'label' => '(no class)',
+                'label' => __('(no class)'),
                 'value' => '',
             ]
         ];

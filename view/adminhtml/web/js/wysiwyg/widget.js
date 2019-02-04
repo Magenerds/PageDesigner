@@ -14,7 +14,7 @@
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
 define([
-    'jquery',
+    '$',
     'uiClass',
     'mage/adminhtml/wysiwyg/widget'
 ], function ($, Class) {
@@ -37,7 +37,7 @@ define([
         // set close function to only close current window
         this.dialogWindow = {
             modal: function () {
-                jQuery('.modals-wrapper .modal-slide._show .action-close').last().trigger('click');
+                $('.modals-wrapper .modal-slide._show .action-close').last().trigger('click');
             }
         };
     };
@@ -56,7 +56,6 @@ define([
         this.openDialog_original.apply(this, arguments);
     };
 
-    // @var WidgetElement
     return Class.extend({
         /**
          * Initializes the Widget object
@@ -79,16 +78,16 @@ define([
             let params = Array.prototype.slice.call(arguments);
 
             // set global variable name
-            let varName = params[0];
+            let widgetInstance = params[0];
 
             // build widget
             // noinspection AmdModulesDependencies
-            window[varName] = new (WysiwygWidget.Widget.bind.apply(WysiwygWidget.Widget, params));
+            window[widgetInstance] = new (WysiwygWidget.Widget.bind.apply(WysiwygWidget.Widget, params));
 
             /**
              * Inserts the widget into the parent element
              */
-            window[varName].insertWidget = window[varName].insertWidget.wrap(function (proceed) {
+            window[widgetInstance].insertWidget = window[widgetInstance].insertWidget.wrap(function (proceed) {
                 // get current form
                 let form = $('#' + this.formEl);
 
@@ -111,9 +110,9 @@ define([
             /**
              * Inserts the widget into the parent element
              */
-            window[varName].validateField = window[varName].validateField.wrap(function (proceed) {
+            window[widgetInstance].validateField = window[widgetInstance].validateField.wrap(function (proceed) {
                 proceed();
-                jQuery('[id=insert_button]').removeClass('disabled');
+                $('[id=insert_button]').removeClass('disabled');
             });
         }
     });

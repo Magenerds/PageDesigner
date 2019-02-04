@@ -25,7 +25,7 @@ interface Constants
      *
      * @type string
      */
-    const VERSION = '2.0.1';
+    const VERSION = '3.0.0'; // ONLY(!) change this if the JSON data structure changes
 
     /**
      * Defines the default grid size

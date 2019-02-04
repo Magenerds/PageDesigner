@@ -16,7 +16,7 @@
 define([
     'jquery',
     'Magento_Ui/js/form/element/select'
-], function (jQuery, Component) {
+], function ($, Component) {
     'use strict'; // NOSONAR
 
     // build component
@@ -46,7 +46,7 @@ define([
                 // confirm
                 if (confirm('Do you really want to import the selected block? Your changes will be lost!')) { // NOSONAR
                     // get page designer instance
-                    var pdElement = jQuery(this.element).closest('fieldset').find('.page-designer'),
+                    var pdElement = $(this.element).closest('fieldset').find('.page-designer'),
                         pdInstance = pdElement.data('pd-instance');
 
                     // import data

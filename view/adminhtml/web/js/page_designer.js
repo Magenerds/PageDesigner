@@ -119,6 +119,11 @@ define([
                         "move": {
                             "title": jQuery.mage.__("Move Row")
                         },
+
+                        "settings": {
+                            "title": jQuery.mage.__("Set settings for row"),
+                            "prompt": jQuery.mage.__("Enter the settings for the row.")
+                        },
                         "delete": {
                             "title": jQuery.mage.__("Delete row"),
                             "confirmation": jQuery.mage.__("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")

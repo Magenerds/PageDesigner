@@ -23,16 +23,12 @@
                 <field id="css_classes_column" translate="label comment" type="text" sortOrder="20" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>CSS Classes (for columns)</label>
-                    <comment>
-                        Comma separated list of css classes the user can choose from in column settings dialog.
-                    </comment>
+                    <comment>Comma separated list of css classes the user can choose from in column settings dialog.</comment>
                 </field>
                 <field id="css_classes_row" translate="label comment" type="text" sortOrder="20" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>CSS Classes (for rows)</label>
-                    <comment>
-                        Comma separated list of css classes the user can choose from in row settings dialog.
-                    </comment>
+                    <comment>Comma separated list of css classes the user can choose from in row settings dialog.</comment>
                 </field>
             </group>
         </section>

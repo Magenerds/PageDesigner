@@ -12,7 +12,7 @@ namespace Magenerds\PageDesigner\Controller\Adminhtml\PageDesigner;
 use Magenerds\PageDesigner\Block\Adminhtml\SettingsAbstract as SettingsAbstractBlock;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Class SettingsAbstract
@@ -26,7 +26,7 @@ use Magento\Framework\Json\Helper\Data as JsonHelper;
 abstract class SettingsAbstract extends Action
 {
     /**
-     * @var JsonHelper
+     * @var Json
      */
     protected $json;
 
@@ -34,11 +34,11 @@ abstract class SettingsAbstract extends Action
      * SettingsAbstract constructor.
      *
      * @param Context $context
-     * @param JsonHelper $json
+     * @param Json $json
      */
     public function __construct(
         Context $context,
-        JsonHelper $json
+        Json $json
     )
     {
         parent::__construct($context);
@@ -55,7 +55,7 @@ abstract class SettingsAbstract extends Action
 
         // retrieve parameters
         if (($params = $this->getRequest()->getParam('object')) &&
-            ($params = $this->json->jsonDecode($params))
+            ($params = $this->json->unserialize($params))
         ) {
             // set parameters on settings block
             /** @var SettingsAbstractBlock $settingsBlock */
