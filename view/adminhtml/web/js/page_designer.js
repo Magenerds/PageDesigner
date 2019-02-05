@@ -67,7 +67,7 @@ define([
                 delete window.wysiwygSetup.prototype.initialize_original;
 
                 // call import callback
-                setTimeout(function() {
+                setTimeout(function () {
                     pd.importPromise.then(function (importCallBack) {
                         importCallBack(this);
                     });
@@ -119,7 +119,6 @@ define([
                         "move": {
                             "title": jQuery.mage.__("Move Row")
                         },
-
                         "settings": {
                             "title": jQuery.mage.__("Set settings for row"),
                             "prompt": jQuery.mage.__("Enter the settings for the row.")
@@ -300,6 +299,15 @@ define([
 
             // set custom import function
             this.pageDesigner.importWithPreviews = function (json) {
+                // FIXME
+                var cb = function (txt) {
+                    console.log('Could not import ' + txt);
+                    return '';
+                };
+                if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
+                    cb = tinymce.activeEditor.plugins.magentowidget.encodeWidgets;
+                }
+
                 // transform to string
                 if (typeof json === 'string' && json) {
                     json = JSON.parse(json);
@@ -311,7 +319,7 @@ define([
                         jQuery(row.columns).each(function (ci, column) {
                             // call widget encoder of editor plugin
                             if (column.content) {
-                                json.rows[ri].columns[ci].preview = tinymce.activeEditor.plugins.magentowidget.encodeWidgets(column.content);
+                                json.rows[ri].columns[ci].preview = cb(column.content);
                             }
                         });
                     });
