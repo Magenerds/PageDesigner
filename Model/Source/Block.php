@@ -40,12 +40,10 @@ class Block extends Page
             $collection->addFieldToFilter(Constants::ATTR_PAGE_DESIGNER_JSON, ['notnull' => true])->load();
 
             // reset options
-            $this->_options = [
-                [
-                    'value' => '',
-                    'label' => __('Please select a page designer block to import...'),
-                ]
-            ];
+            $this->_options = [[
+                'value' => '',
+                'label' => __('Please select a page designer block to import...'),
+            ]];
 
             /** @var $entry CmsBlock */
             foreach ($collection as $entry) {

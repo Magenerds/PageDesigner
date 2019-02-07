@@ -9,7 +9,7 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <fieldset name="general">
-        <!-- disable wysiwyg editor -->
+        <!-- disable original editor -->
         <field name="content">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">

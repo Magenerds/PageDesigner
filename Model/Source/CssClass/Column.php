@@ -48,12 +48,10 @@ class Column implements ArrayInterface
     public function toOptionArray()
     {
         // define values
-        $values = [
-            [
-                'label' => __('(no class)'),
-                'value' => '',
-            ]
-        ];
+        $values = [[
+            'label' => __('(no class)'),
+            'value' => '',
+        ]];
 
         // get classes configuration
         foreach (explode(',', $this->scopeConfig->getValue('pagedesigner/general/css_classes_column')) as $class) {

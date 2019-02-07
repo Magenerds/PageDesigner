@@ -35,13 +35,6 @@ interface Constants
     const DEFAULT_GRID_SIZE = 12;
 
     /**
-     * This prefix gets added to base64 encoded content
-     *
-     * @type string
-     */
-    const BASE64_PREFIX = '---BASE64---';
-
-    /**
      * Attribute name for page designer json
      *
      * @type string

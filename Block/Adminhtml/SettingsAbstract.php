@@ -12,7 +12,8 @@ namespace Magenerds\PageDesigner\Block\Adminhtml;
 use Magenerds\PageDesigner\Model\Source\CssClass\Column;
 use Magenerds\PageDesigner\Model\Source\CssClass\Row;
 use Magento\Backend\Block\Template\Context;
-use Magento\Backend\Block\Widget\Form\Generic;
+use /** @noinspection PhpDeprecationInspection */
+    Magento\Backend\Block\Widget\Form\Generic;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Fieldset;
@@ -21,7 +22,10 @@ use Magento\Framework\Data\FormFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Option\ArrayPool;
-use Magento\Framework\Registry;
+use /** @noinspection PhpDeprecationInspection */
+    Magento\Framework\Registry;
+
+/** @noinspection PhpDeprecationInspection */
 
 /**
  * Class SettingsAbstract
@@ -59,6 +63,7 @@ abstract class SettingsAbstract extends Generic
      */
     protected $cssClassRowModel;
 
+    /** @noinspection PhpDeprecationInspection */
     /**
      * SettingsAbstract constructor.
      *
@@ -71,6 +76,7 @@ abstract class SettingsAbstract extends Generic
      * @param array $data
      */
     public function __construct(
+        /** @noinspection PhpDeprecationInspection */
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
@@ -80,6 +86,7 @@ abstract class SettingsAbstract extends Generic
         array $data = []
     )
     {
+        /** @noinspection PhpDeprecationInspection */
         parent::__construct($context, $registry, $formFactory, $data);
         $this->cssClassColumnModel = $cssClassColumnModel;
         $this->cssClassRowModel = $cssClassRowModel;

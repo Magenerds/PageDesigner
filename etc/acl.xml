@@ -14,8 +14,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Magenerds_PageDesigner::config_pagedesigner"
-                                      title="Magenerds Page Designer" sortOrder="10"/>
+                            <resource id="Magenerds_PageDesigner::config_pagedesigner" title="Magenerds Page Designer" sortOrder="10"/>
                         </resource>
                     </resource>
                 </resource>

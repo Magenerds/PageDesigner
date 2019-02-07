@@ -66,6 +66,7 @@ class ExcludeCssFromMinification
      */
     protected function isCssminLibraryOlderThanVersion3()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         return class_exists(\CSSmin::class);
     }
 }

@@ -20,8 +20,19 @@ define([
     'Magenerds_PageDesigner/js/pdClass',
     'mage/adminhtml/wysiwyg/widget',
     'mage/adminhtml/wysiwyg/tiny_mce/setup'
-], function (jQuery, Abstract, PageDesigner) {
+], function ($, Abstract, PageDesigner) {
     'use strict'; // NOSONAR
+
+    /**
+     * Translator function
+     *
+     * @param {string} text
+     * @returns {string}
+     */
+    function mageTranslate(text) {
+        // noinspection JSUnresolvedVariable
+        return $.mage.__(text);
+    }
 
     // generate class
     return Abstract.extend({
@@ -101,8 +112,8 @@ define([
             // preserve instance
             var that = this;
 
-            // get jQuery instance of element
-            var jElement = jQuery(this.element);
+            // get $ instance of element
+            var jElement = $(this.element);
 
             // create the page designer instance
             this.pageDesigner = new PageDesigner({ // NOSONAR
@@ -110,51 +121,51 @@ define([
                 // translations
                 "i18n": {
                     "gridMode": {
-                        "title": jQuery.mage.__("Switch to responsive grid mode %s")
+                        "title": mageTranslate("Switch to responsive grid mode %s")
                     },
                     "row": {
                         "add": {
-                            "title": jQuery.mage.__("Add Row")
+                            "title": mageTranslate("Add Row")
                         },
                         "move": {
-                            "title": jQuery.mage.__("Move Row")
+                            "title": mageTranslate("Move Row")
                         },
                         "settings": {
-                            "title": jQuery.mage.__("Set settings for row"),
-                            "prompt": jQuery.mage.__("Enter the settings for the row.")
+                            "title": mageTranslate("Set settings for row"),
+                            "prompt": mageTranslate("Enter the settings for the row.")
                         },
                         "delete": {
-                            "title": jQuery.mage.__("Delete row"),
-                            "confirmation": jQuery.mage.__("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
+                            "title": mageTranslate("Delete row"),
+                            "confirmation": mageTranslate("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
                         }
                     },
                     "column": {
                         "add": {
-                            "title": jQuery.mage.__("Add Column")
+                            "title": mageTranslate("Add Column")
                         },
                         "move": {
-                            "title": jQuery.mage.__("Move Column")
+                            "title": mageTranslate("Move Column")
                         },
                         "settings": {
-                            "title": jQuery.mage.__("Set settings for column"),
-                            "prompt": jQuery.mage.__("Enter the settings for the column.")
+                            "title": mageTranslate("Set settings for column"),
+                            "prompt": mageTranslate("Enter the settings for the column.")
                         },
                         "delete": {
-                            "title": jQuery.mage.__("Delete column"),
-                            "confirmation": jQuery.mage.__("Do you really want to delete this column? You cannot undo this.")
+                            "title": mageTranslate("Delete column"),
+                            "confirmation": mageTranslate("Do you really want to delete this column? You cannot undo this.")
                         },
                         "content": {
-                            "title": jQuery.mage.__("Set column content"),
-                            "prompt": jQuery.mage.__("What content to set in?"),
+                            "title": mageTranslate("Set column content"),
+                            "prompt": mageTranslate("What content to set in?"),
                             "copy": {
-                                "title": jQuery.mage.__("Copy content")
+                                "title": mageTranslate("Copy content")
                             },
                             "paste": {
-                                "title": jQuery.mage.__("Paste content")
+                                "title": mageTranslate("Paste content")
                             },
                             "clear": {
-                                "title": jQuery.mage.__("Clear content"),
-                                "confirmation": jQuery.mage.__("Do you really want to clear the column's content?")
+                                "title": mageTranslate("Clear content"),
+                                "confirmation": mageTranslate("Do you really want to clear the column's content?")
                             }
                         }
                     }
@@ -186,13 +197,14 @@ define([
                         };
 
                         // open modal
-                        jQuery('<div/>').modal({
-                            title: jQuery.mage.__('Column Settings'),
+                        $('<div/>').modal({
+                            title: mageTranslate('Column Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
-                                var dialog = jQuery(this).addClass('loading magento-message');
+                                var dialog = $(this).addClass('loading magento-message');
+                                // noinspection AmdModulesDependencies
                                 new Ajax.Updater($(this), window.pageDesignerConfig.columnSettingsUrl, { // NOSONAR
                                     parameters: {object: JSON.stringify(pd.exportColumn(column))},
                                     evalScripts: true, onComplete: function () {
@@ -222,13 +234,14 @@ define([
                         };
 
                         // open modal
-                        jQuery('<div/>').modal({
-                            title: jQuery.mage.__('Row Settings'),
+                        $('<div/>').modal({
+                            title: mageTranslate('Row Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
-                                var dialog = jQuery(this).addClass('loading magento-message');
+                                var dialog = $(this).addClass('loading magento-message');
+                                // noinspection AmdModulesDependencies
                                 new Ajax.Updater($(this), window.pageDesignerConfig.rowSettingsUrl, { // NOSONAR
                                     parameters: {object: JSON.stringify(pd.exportRow(row))},
                                     evalScripts: true, onComplete: function () {
@@ -250,7 +263,7 @@ define([
                      */
                     "onColumnContentSet": function (column, currentContent, callback) {
                         // set editor as a block element to be able to access it
-                        var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
+                        var wysControl = jElement.parent().find('.adminmageTranslatecontrol-wysiwig').parent();
 
                         if (wysControl.is(':hidden')) {
                             wysControl.css({
@@ -261,18 +274,22 @@ define([
                         }
 
                         // preserve original function
+                        // noinspection AmdModulesDependencies
                         if (!WysiwygWidget.Widget.prototype.getWysiwygNode_original) {
+                            // noinspection AmdModulesDependencies
                             WysiwygWidget.Widget.prototype.getWysiwygNode_original = WysiwygWidget.Widget.prototype.getWysiwygNode;
                         }
 
                         // pass our widget content to the widget browser
+                        // noinspection AmdModulesDependencies
                         WysiwygWidget.Widget.prototype.getWysiwygNode = function () {
                             // reset function
+                            // noinspection AmdModulesDependencies
                             this.getWysiwygNode = WysiwygWidget.Widget.prototype.getWysiwygNode = WysiwygWidget.Widget.prototype.getWysiwygNode_original;
 
                             // override the current update content function to store the generated content inside of page designer
                             this.updateContent = function (preview) {
-                                preview = jQuery(preview);
+                                preview = $(preview);
 
                                 // get widget code
                                 var code = preview.attr('id');
@@ -315,8 +332,8 @@ define([
                 // check structure
                 if (json && json.rows) {
                     // add previews
-                    jQuery(json.rows).each(function (ri, row) {
-                        jQuery(row.columns).each(function (ci, column) {
+                    $(json.rows).each(function (ri, row) {
+                        $(row.columns).each(function (ci, column) {
                             // call widget encoder of editor plugin
                             if (column.content) {
                                 json.rows[ri].columns[ci].preview = cb(column.content);

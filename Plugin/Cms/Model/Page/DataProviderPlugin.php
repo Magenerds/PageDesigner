@@ -54,9 +54,8 @@ final class DataProviderPlugin
     {
         if (is_array($result)) {
             foreach ($result as &$data) {
-                if ($this->pageDesignerUtil->mustPageDesignerJsonProvided($data)) {
-                    $data[Constants::ATTR_PAGE_DESIGNER_JSON] =
-                        $this->pageDesignerUtil->getPageDesignerJsonFromHtml($data[Constants::ATTR_CONTENT]);
+                if ($this->pageDesignerUtil->shouldGenerateJson($data)) {
+                    $data[Constants::ATTR_PAGE_DESIGNER_JSON] = $this->pageDesignerUtil->getJsonFromHtml($data[Constants::ATTR_CONTENT]);
                 }
             }
         }

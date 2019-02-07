@@ -14,8 +14,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Framework\View\Element\Template" name="page_designer_js_config"
-                   template="Magenerds_PageDesigner::page_designer/config.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="page_designer_js_config" template="Magenerds_PageDesigner::page_designer/config.phtml"/>
         </referenceContainer>
     </body>
 </page>
