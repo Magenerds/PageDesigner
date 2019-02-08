@@ -19,12 +19,14 @@ define([
     'Magento_Ui/js/form/element/abstract',
     'Magenerds_PageDesigner/js/pdClass',
     'mage/adminhtml/wysiwyg/widget',
-    'mage/adminhtml/wysiwyg/tiny_mce/setup'
+    'mage/adminhtml/wysiwyg/tiny_mce/setup',
+    'mage/translate'
 ], function ($, Abstract, PageDesigner) {
     'use strict'; // NOSONAR
 
     /**
-     * Translator function
+     * Translator
+     * FIXME: does not work for our own strings for some reason
      *
      * @param {string} text
      * @returns {string}
@@ -32,6 +34,19 @@ define([
     function mageTranslate(text) {
         // noinspection JSUnresolvedVariable
         return $.mage.__(text);
+    }
+
+    /**
+     * Widget encoder
+     *
+     * @param {string} content
+     * @returns {string}
+     */
+    function mageWidgetEncode(content) {
+        if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
+            return tinymce.activeEditor.plugins.magentowidget.encodeWidgets(content);
+        }
+        return '';
     }
 
     // generate class
@@ -82,7 +97,7 @@ define([
                     pd.importPromise.then(function (importCallBack) {
                         importCallBack(this);
                     });
-                }, 400); // FIXME
+                }, 400); // FIXME: this should only get triggered when the editor has been fully loaded
             };
 
             // call parent function
@@ -263,8 +278,7 @@ define([
                      */
                     "onColumnContentSet": function (column, currentContent, callback) {
                         // set editor as a block element to be able to access it
-                        var wysControl = jElement.parent().find('.adminmageTranslatecontrol-wysiwig').parent();
-
+                        var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
                         if (wysControl.is(':hidden')) {
                             wysControl.css({
                                 display: 'block',
@@ -272,6 +286,10 @@ define([
                                 height: 0
                             });
                         }
+
+                        // check if we are in edit mode
+                        let editMode = !!column.data('pd-content');
+                        window.widgetTools.setEditMode(editMode);
 
                         // preserve original function
                         // noinspection AmdModulesDependencies
@@ -289,19 +307,27 @@ define([
 
                             // override the current update content function to store the generated content inside of page designer
                             this.updateContent = function (preview) {
-                                preview = $(preview);
+                                var previewElement = $(preview);
 
                                 // get widget code
-                                var code = preview.attr('id');
+                                var code = previewElement.attr('id');
                                 if (code) {
+                                    // noinspection AmdModulesDependencies
+                                    code = Base64.idDecode(code);
+
+                                    // get widget name
+                                    let widgetName = code.replace(/.*type_name="([^"]+)".*$/, '$1');
+                                    if (widgetName.indexOf('{{') !== -1) {
+                                        widgetName = '';
+                                    }
+
                                     // set widget code to content
-                                    // noinspection EqualityComparisonWithCoercionJS,AmdModulesDependencies
-                                    callback(column, code != '' ? Base64.idDecode(code) : '', preview);
+                                    callback(column, code, preview + widgetName);
                                 }
                             };
 
                             // return element
-                            if (!!column.data('pd-content')) {
+                            if (editMode) {
                                 return column.find('.pd-col-content .pd-col-content-preview img:first-child').get(0);
                             } else {
                                 return this.getWysiwygNode();
@@ -316,15 +342,6 @@ define([
 
             // set custom import function
             this.pageDesigner.importWithPreviews = function (json) {
-                // FIXME
-                var cb = function (txt) {
-                    console.log('Could not import ' + txt);
-                    return '';
-                };
-                if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
-                    cb = tinymce.activeEditor.plugins.magentowidget.encodeWidgets;
-                }
-
                 // transform to string
                 if (typeof json === 'string' && json) {
                     json = JSON.parse(json);
@@ -336,7 +353,7 @@ define([
                         $(row.columns).each(function (ci, column) {
                             // call widget encoder of editor plugin
                             if (column.content) {
-                                json.rows[ri].columns[ci].preview = cb(column.content);
+                                json.rows[ri].columns[ci].preview = mageWidgetEncode(column.content);
                             }
                         });
                     });
