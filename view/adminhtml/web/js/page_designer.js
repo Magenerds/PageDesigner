@@ -18,23 +18,11 @@ define([
     'jquery',
     'Magento_Ui/js/form/element/abstract',
     'Magenerds_PageDesigner/js/pdClass',
+    'mage/translate',
     'mage/adminhtml/wysiwyg/widget',
-    'mage/adminhtml/wysiwyg/tiny_mce/setup',
-    'mage/translate'
-], function ($, Abstract, PageDesigner) {
+    'mage/adminhtml/wysiwyg/tiny_mce/setup'
+], function ($, Abstract, PageDesigner, $t) {
     'use strict'; // NOSONAR
-
-    /**
-     * Translator
-     * FIXME: does not work for our own strings for some reason
-     *
-     * @param {string} text
-     * @returns {string}
-     */
-    function mageTranslate(text) {
-        // noinspection JSUnresolvedVariable
-        return $.mage.__(text);
-    }
 
     /**
      * Widget encoder
@@ -46,7 +34,7 @@ define([
         if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
             return tinymce.activeEditor.plugins.magentowidget.encodeWidgets(content);
         }
-        return '';
+        return content;
     }
 
     // generate class
@@ -84,7 +72,7 @@ define([
             }
 
             // override original constructor
-            window.wysiwygSetup.prototype.initialize = function () {
+            window.wysiwygSetup.prototype.initialize = function (htmlId, config) {
                 // call and set back original constructor
                 this.initialize_original.apply(this, arguments);
 
@@ -92,12 +80,16 @@ define([
                 window.wysiwygSetup.prototype.initialize = window.wysiwygSetup.prototype.initialize_original;
                 delete window.wysiwygSetup.prototype.initialize_original;
 
-                // call import callback
-                setTimeout(function () {
-                    pd.importPromise.then(function (importCallBack) {
-                        importCallBack(this);
-                    });
-                }, 400); // FIXME: this should only get triggered when the editor has been fully loaded
+                // check for editor
+                var interval = setInterval(function () {
+                    if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
+                        // resolve promise
+                        pd.importPromise.then(function (importCallBack) {
+                            importCallBack(this);
+                        });
+                        clearInterval(interval);
+                    }
+                }, 100);
             };
 
             // call parent function
@@ -136,51 +128,51 @@ define([
                 // translations
                 "i18n": {
                     "gridMode": {
-                        "title": mageTranslate("Switch to responsive grid mode %s")
+                        "title": $t("Switch to responsive grid mode %s")
                     },
                     "row": {
                         "add": {
-                            "title": mageTranslate("Add Row")
+                            "title": $t("Add Row")
                         },
                         "move": {
-                            "title": mageTranslate("Move Row")
+                            "title": $t("Move Row")
                         },
                         "settings": {
-                            "title": mageTranslate("Set settings for row"),
-                            "prompt": mageTranslate("Enter the settings for the row.")
+                            "title": $t("Set settings for row"),
+                            "prompt": $t("Enter the settings for the row.")
                         },
                         "delete": {
-                            "title": mageTranslate("Delete row"),
-                            "confirmation": mageTranslate("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
+                            "title": $t("Delete row"),
+                            "confirmation": $t("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
                         }
                     },
                     "column": {
                         "add": {
-                            "title": mageTranslate("Add Column")
+                            "title": $t("Add Column")
                         },
                         "move": {
-                            "title": mageTranslate("Move Column")
+                            "title": $t("Move Column")
                         },
                         "settings": {
-                            "title": mageTranslate("Set settings for column"),
-                            "prompt": mageTranslate("Enter the settings for the column.")
+                            "title": $t("Set settings for column"),
+                            "prompt": $t("Enter the settings for the column.")
                         },
                         "delete": {
-                            "title": mageTranslate("Delete column"),
-                            "confirmation": mageTranslate("Do you really want to delete this column? You cannot undo this.")
+                            "title": $t("Delete column"),
+                            "confirmation": $t("Do you really want to delete this column? You cannot undo this.")
                         },
                         "content": {
-                            "title": mageTranslate("Set column content"),
-                            "prompt": mageTranslate("What content to set in?"),
+                            "title": $t("Set column content"),
+                            "prompt": $t("What content to set in?"),
                             "copy": {
-                                "title": mageTranslate("Copy content")
+                                "title": $t("Copy content")
                             },
                             "paste": {
-                                "title": mageTranslate("Paste content")
+                                "title": $t("Paste content")
                             },
                             "clear": {
-                                "title": mageTranslate("Clear content"),
-                                "confirmation": mageTranslate("Do you really want to clear the column's content?")
+                                "title": $t("Clear content"),
+                                "confirmation": $t("Do you really want to clear the column's content?")
                             }
                         }
                     }
@@ -213,18 +205,14 @@ define([
 
                         // open modal
                         $('<div/>').modal({
-                            title: mageTranslate('Column Settings'),
+                            title: $t('Column Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
                                 var dialog = $(this).addClass('loading magento-message');
-                                // noinspection AmdModulesDependencies
-                                new Ajax.Updater($(this), window.pageDesignerConfig.columnSettingsUrl, { // NOSONAR
-                                    parameters: {object: JSON.stringify(pd.exportColumn(column))},
-                                    evalScripts: true, onComplete: function () {
-                                        dialog.removeClass('loading');
-                                    }
+                                dialog.load(window.pageDesignerConfig.columnSettingsUrl, {object: JSON.stringify(pd.exportColumn(column))}, function () {
+                                    dialog.removeClass('loading');
                                 });
                             },
                             closed: function (e, modal) {
@@ -250,18 +238,14 @@ define([
 
                         // open modal
                         $('<div/>').modal({
-                            title: mageTranslate('Row Settings'),
+                            title: $t('Row Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
                                 var dialog = $(this).addClass('loading magento-message');
-                                // noinspection AmdModulesDependencies
-                                new Ajax.Updater($(this), window.pageDesignerConfig.rowSettingsUrl, { // NOSONAR
-                                    parameters: {object: JSON.stringify(pd.exportRow(row))},
-                                    evalScripts: true, onComplete: function () {
-                                        dialog.removeClass('loading');
-                                    }
+                                dialog.load(window.pageDesignerConfig.rowSettingsUrl, {object: JSON.stringify(pd.exportRow(row))}, function () {
+                                    dialog.removeClass('loading');
                                 });
                             },
                             closed: function (e, modal) {
