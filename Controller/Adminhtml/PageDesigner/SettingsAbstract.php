@@ -9,23 +9,44 @@
 
 namespace Magenerds\PageDesigner\Controller\Adminhtml\PageDesigner;
 
+use Magenerds\PageDesigner\Block\Adminhtml\SettingsAbstract as SettingsAbstractBlock;
 use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Serialize\Serializer\Json;
 
 /**
  * Class SettingsAbstract
  *
  * @package     Magenerds\PageDesigner\Controller\Adminhtml\PageDesigner
  * @file        SettingsAbstract.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
 abstract class SettingsAbstract extends Action
 {
     /**
-     * Ajax responder for column settings
+     * @var Json
+     */
+    protected $json;
+
+    /**
+     * SettingsAbstract constructor.
      *
-     * @return void
+     * @param Context $context
+     * @param Json $json
+     */
+    public function __construct(
+        Context $context,
+        Json $json
+    )
+    {
+        parent::__construct($context);
+        $this->json = $json;
+    }
+
+    /**
+     * Ajax responder for column settings
      */
     public function execute()
     {
@@ -34,9 +55,10 @@ abstract class SettingsAbstract extends Action
 
         // retrieve parameters
         if (($params = $this->getRequest()->getParam('object')) &&
-            ($params = $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonDecode($params))
+            ($params = $this->json->unserialize($params))
         ) {
             // set parameters on settings block
+            /** @var SettingsAbstractBlock $settingsBlock */
             $settingsBlock = $this->_view->getLayout()->getBlock('page_designer.settings');
             $settingsBlock->setSettings($params);
         }

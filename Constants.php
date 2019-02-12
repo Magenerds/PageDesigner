@@ -14,7 +14,7 @@ namespace Magenerds\PageDesigner;
  *
  * @package     Magenerds\PageDesigner
  * @file        Constants.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
@@ -25,7 +25,7 @@ interface Constants
      *
      * @type string
      */
-    const VERSION = '2.0.1';
+    const VERSION = '3.0.0'; // ONLY(!) change this if the JSON data structure changes
 
     /**
      * Defines the default grid size
@@ -33,13 +33,6 @@ interface Constants
      * @type number
      */
     const DEFAULT_GRID_SIZE = 12;
-
-    /**
-     * This prefix gets added to base64 encoded content
-     *
-     * @type string
-     */
-    const BASE64_PREFIX = '---BASE64---';
 
     /**
      * Attribute name for page designer json
@@ -54,13 +47,6 @@ interface Constants
      * @type string
      */
     const ATTR_CONTENT = 'content';
-
-    /**
-     * Alias for PageDesigner wysiwyg widget
-     *
-     * @type string
-     */
-    const WIDGET_TYPE = 'Magenerds\PageDesigner\Block\Widget\Editor';
 
     /**
      * A list of tables that must have the column page_designer_json

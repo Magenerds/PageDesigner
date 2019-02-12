@@ -16,11 +16,14 @@ use Magento\Framework\View\Asset\Minification;
  *
  * @package     Magenerds\PageDesigner\Plugin\View
  * @file        ExcludeCssFromMinification.php
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
+ * @site        https://www.techdivision.com/
+ * @author      Pieter Hoste
  */
 class ExcludeCssFromMinification
 {
     /**
-     * Adds css file to the minify_exclude config setting to avoid a bug with minification of this css file
+     * Add css file to the minify_exclude config setting to avoid a bug with minification of this css file
      * Only occurs with tubalmartin/cssmin < v2.4.8-p7
      *
      * Ref:
@@ -33,21 +36,24 @@ class ExcludeCssFromMinification
      * @param string $contentType
      * @return string[]
      */
-    public function aroundGetExcludes(Minification $subject, callable $proceed, $contentType)
+    public function aroundGetExcludes(
+        /** @noinspection PhpUnusedParameterInspection */
+        Minification $subject, // NOSONAR
+        callable $proceed,
+        $contentType
+    )
     {
         $result = $proceed($contentType);
-
         if ($contentType !== 'css' || !$this->isCssminLibraryOlderThanVersion3()) {
             return $result;
         }
 
         $result[] = '/Magenerds_PageDesigner/css/pd-ui.css';
-
         return $result;
     }
 
     /**
-     * Checks if the current version of tubalmartin/cssmin can cause problems with minifying
+     * Check if the current version of tubalmartin/cssmin can cause problems with minifying
      * Strictly speaking, not all versions 2.x.x of the library caused issues (since it got fixed in v2.4.8-p7),
      * but here we check to see if version 2 is being used, where the class was called 'CSSmin' and existed in the global namespace,
      * from version 3 on out, the class name was changed and put in a namespace: 'tubalmartin\CssMin\Minifier'
@@ -58,8 +64,9 @@ class ExcludeCssFromMinification
      *
      * @return bool
      */
-    private function isCssminLibraryOlderThanVersion3()
+    protected function isCssminLibraryOlderThanVersion3()
     {
+        /** @noinspection PhpUndefinedClassInspection */
         return class_exists(\CSSmin::class);
     }
 }

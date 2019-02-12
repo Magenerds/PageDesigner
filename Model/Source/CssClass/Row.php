@@ -17,7 +17,7 @@ use Magento\Framework\Option\ArrayInterface;
  *
  * @package     Magenerds\PageDesigner\Model\Source
  * @file        Row.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
@@ -28,7 +28,7 @@ class Row implements ArrayInterface
      *
      * @var ScopeConfigInterface
      */
-    protected $_scopeConfig;
+    protected $scopeConfig;
 
     /**
      * Row constructor.
@@ -37,7 +37,7 @@ class Row implements ArrayInterface
      */
     public function __construct(ScopeConfigInterface $scopeConfig)
     {
-        $this->_scopeConfig = $scopeConfig;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -48,15 +48,13 @@ class Row implements ArrayInterface
     public function toOptionArray()
     {
         // define values
-        $values = [
-            [
-                'label' => '(no class)',
-                'value' => '',
-            ]
-        ];
+        $values = [[
+            'label' => __('(no class)'),
+            'value' => '',
+        ]];
 
         // get classes configuration
-        foreach (explode(',', $this->_scopeConfig->getValue('pagedesigner/general/css_classes_row')) as $class) {
+        foreach (explode(',', $this->scopeConfig->getValue('pagedesigner/general/css_classes_row')) as $class) {
             $values[] = [
                 'label' => $class,
                 'value' => $class,

@@ -9,16 +9,16 @@
 
 namespace Magenerds\PageDesigner\Plugin\Cms\Model\Block;
 
-use Magento\Cms\Model\Block\DataProvider;
 use Magenerds\PageDesigner\Constants;
 use Magenerds\PageDesigner\Utils\PageDesignerUtil;
+use Magento\Cms\Model\Block\DataProvider;
 
 /**
  * Class DataProviderPlugin
  *
  * @package     Magenerds\PageDesigner\Plugin\Cms\Model\Block
  * @file        DataProviderPlugin.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
@@ -27,10 +27,11 @@ final class DataProviderPlugin
     /**
      * @var PageDesignerUtil
      */
-    private $pageDesignerUtil;
+    protected $pageDesignerUtil;
 
     /**
      * DataProviderPlugin constructor.
+     *
      * @param PageDesignerUtil $pageDesignerUtil
      */
     public function __construct(PageDesignerUtil $pageDesignerUtil)
@@ -39,19 +40,22 @@ final class DataProviderPlugin
     }
 
     /**
-     * Manipulates return value of getData
+     * Manipulate return value of getData
      *
      * @param DataProvider $dataProvider
      * @param array $result
      * @return array
      */
-    public function afterGetData(DataProvider $dataProvider, $result) // NOSONAR
+    public function afterGetData(
+        /** @noinspection PhpUnusedParameterInspection */
+        DataProvider $dataProvider, // NOSONAR
+        $result
+    )
     {
         if (is_array($result)) {
             foreach ($result as &$data) {
-                if ($this->pageDesignerUtil->mustPageDesignerJsonProvided($data)) {
-                    $data[Constants::ATTR_PAGE_DESIGNER_JSON] =
-                        $this->pageDesignerUtil->getPageDesignerJsonFromHtml($data[Constants::ATTR_CONTENT]);
+                if ($this->pageDesignerUtil->shouldGenerateJson($data)) {
+                    $data[Constants::ATTR_PAGE_DESIGNER_JSON] = $this->pageDesignerUtil->getJsonFromHtml($data[Constants::ATTR_CONTENT]);
                 }
             }
         }

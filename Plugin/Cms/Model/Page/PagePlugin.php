@@ -13,13 +13,14 @@ use Magenerds\PageDesigner\Constants;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
 use Magento\Cms\Model\Page;
 use Magento\Cms\Model\ResourceModel\Page as PageResource;
+use Magento\Framework\Validator\Exception;
 
 /**
  * Class PagePlugin
  *
  * @package     Magenerds\PageDesigner\Plugin\Cms\Model\Page
  * @file        PagePlugin.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
@@ -30,10 +31,10 @@ final class PagePlugin
      *
      * @var HtmlRendererInterface
      */
-    private $htmlRenderer;
+    protected $htmlRenderer;
 
     /**
-     * CmsPagePlugin constructor.
+     * PagePlugin constructor.
      *
      * @param HtmlRendererInterface $htmlRenderer
      */
@@ -43,17 +44,22 @@ final class PagePlugin
     }
 
     /**
-     * Manipulates the Page entity before it is saved
+     * Manipulate the Page entity before it is saved
      *
      * @param PageResource $pageResource
      * @param Page $page
-     * @param array $arguments
+     * @param mixed ...$arguments
+     * @throws Exception
      */
-    public function beforeSave(PageResource $pageResource, Page $page, ... $arguments) // NOSONAR
+    public function beforeSave(
+        /** @noinspection PhpUnusedParameterInspection */
+        PageResource $pageResource, // NOSONAR
+        Page $page,
+        ... $arguments // NOSONAR
+    )
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $json = $page->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
-
         if (strlen(trim($json)) > 0) {
             $page->setContent($this->htmlRenderer->toHtml($json));
         }

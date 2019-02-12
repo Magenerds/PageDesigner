@@ -9,7 +9,7 @@
 /**
  * Page Designer
  *
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
@@ -19,14 +19,14 @@ define([
     'Magenerds_PageDesigner/js/vendor/sortableJs',
     'uiClass',
     'jquery/ui'
-], function (jQuery, Sortable, Class) {
+], function ($, Sortable, Class) {
     'use strict'; // NOSONAR
 
     return Class.extend({
         /**
          * Meta information used by the module
          *
-         * @type {object}
+         * @type {{}}
          */
         meta: {
             "version": "1.0.0",
@@ -43,7 +43,7 @@ define([
         /**
          * Default options for settings
          *
-         * @type {object}
+         * @type {{}}
          */
         defaults: {
             "debug": false, // defines if errors and warnings should get logged
@@ -90,6 +90,7 @@ define([
                  */
                 "onColumnSettingsSet": function (column, currentSettings, callback) {
                     // ask for settings
+                    // noinspection JSUnresolvedVariable
                     var settingsText = window.prompt(this.__('column.settings.prompt'), currentSettings ? currentSettings.settings_text : '');
                     // check answer
                     if (settingsText !== null && settingsText !== false) {
@@ -106,6 +107,7 @@ define([
                  */
                 "onRowSettingsSet": function (row, currentSettings, callback) {
                     // ask for settings
+                    // noinspection JSUnresolvedVariable
                     var settingsText = window.prompt(this.__('row.settings.prompt'), currentSettings ? currentSettings.settings_text : '');
                     // check answer
                     if (settingsText !== null && settingsText !== false) {
@@ -242,7 +244,7 @@ define([
             var gridControlContainer = this.createElement('pd-grid-mode-row');
 
             // define grid control buttons
-            jQuery(this.meta.gridModes).each(function (i, mode) {
+            $(this.meta.gridModes).each(function (i, mode) {
                 // create button
                 var button = pd.createElement('pd-grid-mode-button', 'a').attr('data-grid-mode', mode).attr('title', pd.__('gridMode.title').replace('%s', mode.toUpperCase())),
                     icon = pd.createIcon('device-' + mode);
@@ -346,7 +348,7 @@ define([
          */
         _setGridMode: function (mode) {
             // check if grid mode exists
-            if (jQuery.inArray(mode, this.meta.gridModes) === -1) {
+            if ($.inArray(mode, this.meta.gridModes) === -1) {
                 return;
             }
 
@@ -362,7 +364,7 @@ define([
             // iterate over columns
             this.rowSet.find('.pd-row .pd-col').each(function () {
                 // get column
-                var column = jQuery(this);
+                var column = $(this);
 
                 // set grid class
                 pd.setGridSize(column, pd.getGridSizeForDisplay(column), null, true);
@@ -459,11 +461,11 @@ define([
 
             // reset state
             this.rowSet.find('.pd-row').each(function () {
-                pd.removeRow(jQuery(this), true);
+                pd.removeRow($(this), true);
             });
 
             // iterate over rows
-            jQuery(d.rows).each(function (ri, row) {
+            $(d.rows).each(function (ri, row) {
                 // check data structure
                 if (!Array.isArray(row.columns)) {
                     pd.log('Invalid data structure for row ' + ri + '!', 'warning');
@@ -475,12 +477,12 @@ define([
                     pd.setRowSettings(rowEl, row.settings);
 
                     // iterate over columns
-                    jQuery(row.columns).each(function (ci, col) {
+                    $(row.columns).each(function (ci, col) {
                         // add column
                         var colEl = pd.addColumn(rowEl, col.content, col.preview, col.settings);
 
                         // set grid sizes
-                        jQuery(Object.keys(col.gridSize)).each(function (gi, gs) {
+                        $(Object.keys(col.gridSize)).each(function (gi, gs) {
                             pd.setGridSize(colEl, col.gridSize[gs], gs);
                         });
                     });
@@ -497,7 +499,7 @@ define([
         /**
          * Exports the current grid to JSON
          *
-         * @returns {string}
+         * @returns {object}
          */
         export: function () {
             // preserve instance
@@ -512,7 +514,7 @@ define([
             // iterate over all rows
             this.rowSet.find('.pd-row').each(function () {
                 // add row json
-                json.rows.push(pd.exportRow(jQuery(this)));
+                json.rows.push(pd.exportRow($(this)));
             });
 
             // return data
@@ -538,7 +540,7 @@ define([
             // iterate over row's columns
             row.find('.pd-col').each(function () {
                 // add column json
-                rowJson.columns.push(pd.exportColumn(jQuery(this)));
+                rowJson.columns.push(pd.exportColumn($(this)));
             });
 
             // return data
@@ -566,8 +568,9 @@ define([
             };
 
             // iterate over all grid modes
-            jQuery(pd.meta.gridModes).each(function (i, mode) {
+            $(pd.meta.gridModes).each(function (i, mode) {
                 // set grid size
+                // noinspection JSAssignmentUsedAsCondition
                 if (gridSize = pd.getGridSize(column, mode)) {
                     colJson.gridSize[mode] = gridSize;
                 }
@@ -643,7 +646,7 @@ define([
                  */
                 onRemove: function (event) {
                     // find row the column belongs to
-                    var row = jQuery(event.from).closest('.pd-row');
+                    var row = $(event.from).closest('.pd-row');
 
                     // if there are no other columns left, remove the row
                     if (!row.find('.pd-col').length) {
@@ -744,13 +747,13 @@ define([
                 if (virtualRowLength) {
                     // set virtual row columns size
                     rowCols.slice(-virtualRowLength).each(function () {
-                        pd.setGridSize(jQuery(this), size);
+                        pd.setGridSize($(this), size);
                     });
                 }
             } else {
                 // the row has been touched, so only calculate the new item's size
                 row.find('.pd-col').each(function () {
-                    size += pd.getGridSizeForDisplay(jQuery(this));
+                    size += pd.getGridSizeForDisplay($(this));
                 });
                 size = this.grid.max - (size % this.grid.max);
             }
@@ -824,7 +827,7 @@ define([
                  */
                 resize: function (e, ui) {
                     // get column
-                    var column = jQuery(ui.element);
+                    var column = $(ui.element);
 
                     // calculate grid size
                     var gridSize = pd._getGridValueForSize(ui.size.width);
@@ -922,8 +925,8 @@ define([
          * Set column content
          *
          * @param {object} column
-         * @param {string} content
-         * @param {string} [preview]
+         * @param {string|null} [content]
+         * @param {string|null} [preview]
          */
         setColumnContent: function (column, content, preview) {
             // get preview element
@@ -994,7 +997,7 @@ define([
          *
          * @param {object} column
          * @param {number} size
-         * @param {string} [gridMode]
+         * @param {string|null} [gridMode]
          * @param {boolean} [doNotStore]
          * @returns {object}
          */
@@ -1084,7 +1087,7 @@ define([
             }
 
             // return element
-            return jQuery('<' + tag + '>').addClass(cls);
+            return $('<' + tag + '>').addClass(cls);
         },
 
         /**
@@ -1144,7 +1147,7 @@ define([
             }
 
             // validate logging level
-            if (jQuery.inArray(level, ['log', 'warn', 'error']) === -1) {
+            if ($.inArray(level, ['log', 'warn', 'error']) === -1) {
                 level = 'log';
             }
 
@@ -1178,7 +1181,7 @@ define([
         _eventProxy: function (func) {
             var originalBinding = this;
             return function (e) {
-                func.bind(originalBinding)(jQuery(this), e);
+                func.bind(originalBinding)($(this), e);
             };
         },
 

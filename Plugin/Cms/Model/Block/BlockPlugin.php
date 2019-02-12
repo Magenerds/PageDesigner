@@ -13,13 +13,14 @@ use Magenerds\PageDesigner\Constants;
 use Magenerds\PageDesigner\Utils\HtmlRendererInterface;
 use Magento\Cms\Model\Block;
 use Magento\Cms\Model\ResourceModel\Block as BlockResource;
+use Magento\Framework\Validator\Exception;
 
 /**
  * Class BlockPlugin
  *
  * @package     Magenerds\PageDesigner\Plugin\Cms\Model\Block
  * @file        BlockPlugin.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
@@ -30,7 +31,7 @@ final class BlockPlugin
      *
      * @var HtmlRendererInterface
      */
-    private $htmlRenderer;
+    protected $htmlRenderer;
 
     /**
      * BlockPlugin constructor.
@@ -43,17 +44,22 @@ final class BlockPlugin
     }
 
     /**
-     * Manipulates the Block entity before it is saved
+     * Manipulate the Block entity before it is saved
      *
      * @param BlockResource $blockResource
      * @param Block $block
-     * @param array $arguments
+     * @param mixed ...$arguments
+     * @throws Exception
      */
-    public function beforeSave(BlockResource $blockResource, Block $block, ... $arguments) // NOSONAR
+    public function beforeSave(
+        /** @noinspection PhpUnusedParameterInspection */
+        BlockResource $blockResource, // NOSONAR
+        Block $block,
+        ... $arguments // NOSONAR
+    )
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $json = $block->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
-
         if (strlen(trim($json)) > 0) {
             $block->setContent($this->htmlRenderer->toHtml($json));
         }

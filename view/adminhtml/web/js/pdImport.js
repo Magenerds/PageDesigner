@@ -9,14 +9,14 @@
 /**
  * Page Designer Import
  *
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
 define([
     'jquery',
     'Magento_Ui/js/form/element/select'
-], function (jQuery, Component) {
+], function ($, Component) {
     'use strict'; // NOSONAR
 
     // build component
@@ -44,9 +44,10 @@ define([
             // if value has been given
             if (value) {
                 // confirm
-                if (confirm('Do you really want to import the selected block? Your changes will be lost!')) {
+                // noinspection JSUnresolvedVariable
+                if (confirm($.mage.__('Do you really want to import the selected block? Your changes will be lost!'))) { // NOSONAR
                     // get page designer instance
-                    var pdElement = jQuery(this.element).closest('fieldset').find('.page-designer'),
+                    var pdElement = $(this.element).closest('fieldset').find('.page-designer'),
                         pdInstance = pdElement.data('pd-instance');
 
                     // import data

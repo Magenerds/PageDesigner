@@ -9,7 +9,7 @@
 /**
  * Page Designer
  *
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
@@ -18,66 +18,24 @@ define([
     'jquery',
     'Magento_Ui/js/form/element/abstract',
     'Magenerds_PageDesigner/js/pdClass',
+    'mage/translate',
     'mage/adminhtml/wysiwyg/widget',
     'mage/adminhtml/wysiwyg/tiny_mce/setup'
-], function (jQuery, Abstract, PageDesigner) {
+], function ($, Abstract, PageDesigner, $t) {
     'use strict'; // NOSONAR
 
-    // preserve original function
-    if (!widgetTools.openDialog_original) {
-        widgetTools.openDialog_original = widgetTools.openDialog;
+    /**
+     * Widget encoder
+     *
+     * @param {string} content
+     * @returns {string}
+     */
+    function mageWidgetEncode(content) {
+        if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
+            return tinymce.activeEditor.plugins.magentowidget.encodeWidgets(content);
+        }
+        return content;
     }
-
-    // override widget dialog opener, magento doesn't allow opening 2+ instances per default
-    widgetTools.openDialog = function () {
-        // fake dialog to be not open yet
-        this.dialogOpened = false;
-
-        // open another instance
-        this.openDialog_original.apply(this, arguments);
-
-        // set close function to only close current window
-        this.dialogWindow = {
-            modal: function () {
-                jQuery('.modals-wrapper .modal-slide._show .action-close').last().trigger('click');
-            }
-        };
-    };
-
-    // override TinyMCE 'setup' function for fix PageDesigner and WYSIWYG editor bug
-    tinyMceWysiwygSetup.prototype.setup = function (mode) {
-        if (this.config.widget_plugin_src) {
-            tinyMCE.PluginManager.load('magentowidget', this.config.widget_plugin_src);
-        }
-
-        if (this.config.plugins) {
-            this.config.plugins.each(function (plugin) {
-                tinyMCE.PluginManager.load(plugin.name, plugin.src);
-            });
-        }
-
-        /**
-         * Magento 2 Core Bug
-         * Load TinyMce Editor in dom
-         * BugFix for PageDesigner
-         */
-        if (jQuery.isReady) {
-            tinyMCE.dom.Event.domLoaded = true;
-        }
-
-        tinyMCE.init(this.getSettings(mode));
-    };
-
-    // preserve original function
-    if (!MediabrowserUtility.openDialog_original) {
-        MediabrowserUtility.openDialog_original = MediabrowserUtility.openDialog;
-    }
-
-    // fix modal open function of media browser to not override the active window
-    MediabrowserUtility.openDialog = function () {
-        this.modal = null;
-        this.openDialog_original.apply(this, arguments);
-    };
 
     // generate class
     return Abstract.extend({
@@ -109,23 +67,29 @@ define([
             });
 
             // preserve editor setup constructor
-            if (!tinyMceWysiwygSetup.prototype.initialize_original) {
-                tinyMceWysiwygSetup.prototype.initialize_original = tinyMceWysiwygSetup.prototype.initialize;
+            if (!window.wysiwygSetup.prototype.initialize_original) {
+                window.wysiwygSetup.prototype.initialize_original = window.wysiwygSetup.prototype.initialize;
             }
 
             // override original constructor
-            tinyMceWysiwygSetup.prototype.initialize = function () {
+            window.wysiwygSetup.prototype.initialize = function (htmlId, config) {
                 // call and set back original constructor
                 this.initialize_original.apply(this, arguments);
 
                 // reset function
-                tinyMceWysiwygSetup.prototype.initialize = tinyMceWysiwygSetup.prototype.initialize_original;
-                delete tinyMceWysiwygSetup.prototype.initialize_original;
+                window.wysiwygSetup.prototype.initialize = window.wysiwygSetup.prototype.initialize_original;
+                delete window.wysiwygSetup.prototype.initialize_original;
 
-                // call import callback
-                pd.importPromise.then(function (importCallBack) {
-                    importCallBack(this);
-                }.bind(this));
+                // check for editor
+                var interval = setInterval(function () {
+                    if (tinymce && tinymce.activeEditor && tinymce.activeEditor.plugins && tinymce.activeEditor.plugins.magentowidget) {
+                        // resolve promise
+                        pd.importPromise.then(function (importCallBack) {
+                            importCallBack(this);
+                        });
+                        clearInterval(interval);
+                    }
+                }, 100);
             };
 
             // call parent function
@@ -144,8 +108,7 @@ define([
             this.buildPageDesigner();
 
             // import on promise
-            this.importPromiseResolve(function (editorInstance) {
-                this.pageDesigner.editorInstance = editorInstance;
+            this.importPromiseResolve(function () {
                 this.pageDesigner.importWithPreviews(this.importData);
             }.bind(this));
         },
@@ -156,8 +119,8 @@ define([
             // preserve instance
             var that = this;
 
-            // get jQuery instance of element
-            var jElement = jQuery(this.element);
+            // get $ instance of element
+            var jElement = $(this.element);
 
             // create the page designer instance
             this.pageDesigner = new PageDesigner({ // NOSONAR
@@ -165,47 +128,51 @@ define([
                 // translations
                 "i18n": {
                     "gridMode": {
-                        "title": jQuery.mage.__("Switch to responsive grid mode %s")
+                        "title": $t("Switch to responsive grid mode %s")
                     },
                     "row": {
                         "add": {
-                            "title": jQuery.mage.__("Add Row")
+                            "title": $t("Add Row")
                         },
                         "move": {
-                            "title": jQuery.mage.__("Move Row")
+                            "title": $t("Move Row")
+                        },
+                        "settings": {
+                            "title": $t("Set settings for row"),
+                            "prompt": $t("Enter the settings for the row.")
                         },
                         "delete": {
-                            "title": jQuery.mage.__("Delete row"),
-                            "confirmation": jQuery.mage.__("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
+                            "title": $t("Delete row"),
+                            "confirmation": $t("Do you REALLY want to delete the whole row? This will permanently delete all content of the different columns.")
                         }
                     },
                     "column": {
                         "add": {
-                            "title": jQuery.mage.__("Add Column")
+                            "title": $t("Add Column")
                         },
                         "move": {
-                            "title": jQuery.mage.__("Move Column")
+                            "title": $t("Move Column")
                         },
                         "settings": {
-                            "title": jQuery.mage.__("Set settings for column"),
-                            "prompt": jQuery.mage.__("Enter the settings for the column.")
+                            "title": $t("Set settings for column"),
+                            "prompt": $t("Enter the settings for the column.")
                         },
                         "delete": {
-                            "title": jQuery.mage.__("Delete column"),
-                            "confirmation": jQuery.mage.__("Do you really want to delete this column? You cannot undo this.")
+                            "title": $t("Delete column"),
+                            "confirmation": $t("Do you really want to delete this column? You cannot undo this.")
                         },
                         "content": {
-                            "title": jQuery.mage.__("Set column content"),
-                            "prompt": jQuery.mage.__("What content to set in?"),
+                            "title": $t("Set column content"),
+                            "prompt": $t("What content to set in?"),
                             "copy": {
-                                "title": jQuery.mage.__("Copy content")
+                                "title": $t("Copy content")
                             },
                             "paste": {
-                                "title": jQuery.mage.__("Paste content")
+                                "title": $t("Paste content")
                             },
                             "clear": {
-                                "title": jQuery.mage.__("Clear content"),
-                                "confirmation": jQuery.mage.__("Do you really want to clear the column's content?")
+                                "title": $t("Clear content"),
+                                "confirmation": $t("Do you really want to clear the column's content?")
                             }
                         }
                     }
@@ -237,18 +204,15 @@ define([
                         };
 
                         // open modal
-                        jQuery('<div/>').modal({
-                            title: jQuery.mage.__('Column Settings'),
+                        $('<div/>').modal({
+                            title: $t('Column Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
-                                var dialog = jQuery(this).addClass('loading magento-message');
-                                new Ajax.Updater($(this), window.pageDesignerConfig.columnSettingsUrl, { // NOSONAR
-                                    parameters: {object: JSON.stringify(pd.exportColumn(column))},
-                                    evalScripts: true, onComplete: function () {
-                                        dialog.removeClass('loading');
-                                    }
+                                var dialog = $(this).addClass('loading magento-message');
+                                dialog.load(window.pageDesignerConfig.columnSettingsUrl, {object: JSON.stringify(pd.exportColumn(column))}, function () {
+                                    dialog.removeClass('loading');
                                 });
                             },
                             closed: function (e, modal) {
@@ -273,18 +237,15 @@ define([
                         };
 
                         // open modal
-                        jQuery('<div/>').modal({
-                            title: jQuery.mage.__('Row Settings'),
+                        $('<div/>').modal({
+                            title: $t('Row Settings'),
                             type: 'slide',
                             buttons: [],
                             opened: function () {
                                 // load form
-                                var dialog = jQuery(this).addClass('loading magento-message');
-                                new Ajax.Updater($(this), window.pageDesignerConfig.rowSettingsUrl, { // NOSONAR
-                                    parameters: {object: JSON.stringify(pd.exportRow(row))},
-                                    evalScripts: true, onComplete: function () {
-                                        dialog.removeClass('loading');
-                                    }
+                                var dialog = $(this).addClass('loading magento-message');
+                                dialog.load(window.pageDesignerConfig.rowSettingsUrl, {object: JSON.stringify(pd.exportRow(row))}, function () {
+                                    dialog.removeClass('loading');
                                 });
                             },
                             closed: function (e, modal) {
@@ -302,7 +263,6 @@ define([
                     "onColumnContentSet": function (column, currentContent, callback) {
                         // set editor as a block element to be able to access it
                         var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
-                        
                         if (wysControl.is(':hidden')) {
                             wysControl.css({
                                 display: 'block',
@@ -311,47 +271,61 @@ define([
                             });
                         }
 
+                        // check if we are in edit mode
+                        let editMode = !!column.data('pd-content');
+                        window.widgetTools.setEditMode(editMode);
+
                         // preserve original function
+                        // noinspection AmdModulesDependencies
                         if (!WysiwygWidget.Widget.prototype.getWysiwygNode_original) {
+                            // noinspection AmdModulesDependencies
                             WysiwygWidget.Widget.prototype.getWysiwygNode_original = WysiwygWidget.Widget.prototype.getWysiwygNode;
                         }
 
                         // pass our widget content to the widget browser
+                        // noinspection AmdModulesDependencies
                         WysiwygWidget.Widget.prototype.getWysiwygNode = function () {
                             // reset function
+                            // noinspection AmdModulesDependencies
                             this.getWysiwygNode = WysiwygWidget.Widget.prototype.getWysiwygNode = WysiwygWidget.Widget.prototype.getWysiwygNode_original;
 
                             // override the current update content function to store the generated content inside of page designer
                             this.updateContent = function (preview) {
-                                preview = jQuery(preview);
+                                var previewElement = $(preview);
 
                                 // get widget code
-                                var code = preview.attr('id');
+                                var code = previewElement.attr('id');
                                 if (code) {
+                                    // noinspection AmdModulesDependencies
+                                    code = Base64.idDecode(code);
+
+                                    // get widget name
+                                    let widgetName = code.replace(/.*type_name="([^"]+)".*$/, '$1');
+                                    if (widgetName.indexOf('{{') !== -1) {
+                                        widgetName = '';
+                                    }
+
                                     // set widget code to content
-                                    callback(column, code != '' ? Base64.idDecode(code) : '', preview);
+                                    callback(column, code, preview + widgetName);
                                 }
                             };
 
                             // return element
-                            if (!!column.data('pd-content')) {
+                            if (editMode) {
                                 return column.find('.pd-col-content .pd-col-content-preview img:first-child').get(0);
                             } else {
-                                return null;
+                                return this.getWysiwygNode();
                             }
                         };
 
                         // open the widget browser
-                        wysControl.find('.mceButton.mce_magentowidget').get(0).click();
+                        wysControl.find('.action-add-widget').get(0).click();
                     }
                 }
             });
 
             // set custom import function
             this.pageDesigner.importWithPreviews = function (json) {
-                // preserve instance
-                var that = this;
-
                 // transform to string
                 if (typeof json === 'string' && json) {
                     json = JSON.parse(json);
@@ -359,11 +333,11 @@ define([
                 // check structure
                 if (json && json.rows) {
                     // add previews
-                    jQuery(json.rows).each(function (ri, row) {
-                        jQuery(row.columns).each(function (ci, column) {
+                    $(json.rows).each(function (ri, row) {
+                        $(row.columns).each(function (ci, column) {
                             // call widget encoder of editor plugin
                             if (column.content) {
-                                json.rows[ri].columns[ci].preview = that.editorInstance.encodeWidgets(column.content);
+                                json.rows[ri].columns[ci].preview = mageWidgetEncode(column.content);
                             }
                         });
                     });

@@ -10,13 +10,14 @@
 namespace Magenerds\PageDesigner\Block\Adminhtml;
 
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Class ColumnSettings
  *
  * @package     Magenerds\PageDesigner\Block\Adminhtml
  * @file        ColumnSettings.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
@@ -25,20 +26,21 @@ class ColumnSettings extends SettingsAbstract
     /**
      * Add fields to main fieldset
      *
-     * @return self
+     * @return $this
+     * @throws LocalizedException
      */
     public function addFields()
     {
         // add field
-        $this->_addField(new DataObject([
+        $this->addField(new DataObject([
             'key' => 'css_class',
             'type' => 'select',
-            'values' => $this->_cssClassColumnModel->toOptionArray(),
+            'values' => $this->cssClassColumnModel->toOptionArray(),
             'label' => __('CSS Class'),
         ]));
 
         // add save button
-        $this->_addField(new DataObject([
+        $this->addField(new DataObject([
             'key' => 'save',
             'type' => 'note',
             'label' => ' ',

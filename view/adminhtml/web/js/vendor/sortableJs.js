@@ -8,15 +8,12 @@
 
     if (typeof define === "function" && define.amd) {
         define(factory);
-    }
-    else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+    } else if (typeof module != "undefined" && typeof module.exports != "undefined") {
         module.exports = factory();
-    }
-    else if (typeof Package !== "undefined") {
+    } else if (typeof Package !== "undefined") {
         //noinspection JSUnresolvedVariable
         Sortable = factory();  // export for Meteor.js
-    }
-    else {
+    } else {
         /* jshint sub:true */
         window["Sortable"] = factory();
     }
@@ -107,7 +104,7 @@
 
                     scrollOffsetX,
                     scrollOffsetY
-                    ;
+                ;
 
                 // Delect scrollEl
                 if (scrollParentEl !== rootEl) {
@@ -209,13 +206,13 @@
 
             options.group = group;
         }
-        ;
+    ;
 
 
     /**
      * @class  Sortable
      * @param  {HTMLElement}  el
-     * @param  {Object}       [options]
+     * @param  {object}       [options]
      */
     function Sortable(el, options) {
         if (!(el && el.nodeType && el.nodeType === 1)) {
@@ -338,8 +335,7 @@
                     evt.preventDefault();
                     return; // cancel dnd
                 }
-            }
-            else if (filter) {
+            } else if (filter) {
                 filter = filter.split(',').some(function (criteria) {
                     criteria = _closest(originalTarget, criteria.trim(), el);
 
@@ -446,11 +442,9 @@
                 };
 
                 this._onDragStart(tapEvt, 'touch');
-            }
-            else if (!this.nativeDraggable) {
+            } else if (!this.nativeDraggable) {
                 this._onDragStart(tapEvt, true);
-            }
-            else {
+            } else {
                 _on(dragEl, 'dragend', this);
                 _on(rootEl, 'dragstart', this._onDragStart);
             }
@@ -623,8 +617,7 @@
                 }
 
                 this._loopId = setInterval(this._emulateDragOver, 50);
-            }
-            else {
+            } else {
                 if (dataTransfer) {
                     dataTransfer.effectAllowed = 'move';
                     options.setData && options.setData.call(this, dataTransfer, dragEl);
@@ -658,9 +651,9 @@
                 (isOwner
                         ? canSort || (revert = !rootEl.contains(dragEl)) // Reverting item into the original list
                         : (
-                        putSortable === this ||
-                        activeGroup.checkPull(this, activeSortable, dragEl, evt) && group.checkPut(this, activeSortable, dragEl, evt)
-                    )
+                            putSortable === this ||
+                            activeGroup.checkPull(this, activeSortable, dragEl, evt) && group.checkPut(this, activeSortable, dragEl, evt)
+                        )
                 ) &&
                 (evt.rootEl === void 0 || evt.rootEl === this.el) // touch fallback
             ) {
@@ -681,8 +674,7 @@
 
                     if (cloneEl || nextEl) {
                         rootEl.insertBefore(dragEl, cloneEl || nextEl);
-                    }
-                    else if (!canSort) {
+                    } else if (!canSort) {
                         rootEl.appendChild(dragEl);
                     }
 
@@ -712,8 +704,7 @@
                         this._animate(dragRect, dragEl);
                         target && this._animate(targetRect, target);
                     }
-                }
-                else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
+                } else if (target && !target.animated && target !== dragEl && (target.parentNode[expando] !== void 0)) {
                     if (lastEl !== target) {
                         lastEl = target;
                         lastCSS = _css(target);
@@ -732,7 +723,7 @@
                         nextSibling = target.nextElementSibling,
                         moveVector = _onMove(rootEl, el, dragEl, dragRect, target, targetRect, evt),
                         after
-                        ;
+                    ;
 
                     if (moveVector !== false) {
                         _silent = true;
@@ -742,15 +733,13 @@
 
                         if (moveVector === 1 || moveVector === -1) {
                             after = (moveVector === 1);
-                        }
-                        else if (floating) {
+                        } else if (floating) {
                             var elTop = dragEl.offsetTop,
                                 tgTop = target.offsetTop;
 
                             if (elTop === tgTop) {
                                 after = (target.previousElementSibling === dragEl) && !isWide || halfway && isWide;
-                            }
-                            else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
+                            } else if (target.previousElementSibling === dragEl || dragEl.previousElementSibling === target) {
                                 after = (evt.clientY - targetRect.top) / height > 0.5;
                             } else {
                                 after = tgTop > elTop;
@@ -863,8 +852,7 @@
                             _dispatchEvent(null, parentEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
                             _dispatchEvent(this, rootEl, 'sort', dragEl, rootEl, oldIndex, newIndex);
                         }
-                    }
-                    else {
+                    } else {
                         // Remove clone
                         cloneEl && cloneEl.parentNode.removeChild(cloneEl);
 
@@ -931,8 +919,7 @@
                     this._onDragOver(evt);
                     _globalDragOver(evt);
                 }
-            }
-            else if (type === 'drop' || type === 'dragend') {
+            } else if (type === 'drop' || type === 'dragend') {
                 this._onDrop(evt);
             }
         },
@@ -1110,8 +1097,7 @@
         if (el) {
             if (el.classList) {
                 el.classList[state ? 'add' : 'remove'](name);
-            }
-            else {
+            } else {
                 var className = (' ' + el.className + ' ').replace(RSPACE, ' ').replace(' ' + name + ' ', ' ');
                 el.className = (className + (state ? ' ' + name : '')).replace(RSPACE, ' ');
             }
@@ -1126,14 +1112,12 @@
             if (val === void 0) {
                 if (document.defaultView && document.defaultView.getComputedStyle) {
                     val = document.defaultView.getComputedStyle(el, '');
-                }
-                else if (el.currentStyle) {
+                } else if (el.currentStyle) {
                     val = el.currentStyle;
                 }
 
                 return prop === void 0 ? val : val[prop];
-            }
-            else {
+            } else {
                 if (!(prop in style)) {
                     prop = '-webkit-' + prop;
                 }
@@ -1230,9 +1214,9 @@
         // 5 — min delta
         // abs — нельзя добавлять, а то глюки при наведении сверху
         return (
-                (evt.clientY - (rect.top + rect.height) > 5) ||
-                (evt.clientX - (rect.right + rect.width) > 5)
-            ) && lastEl;
+            (evt.clientY - (rect.top + rect.height) > 5) ||
+            (evt.clientX - (rect.right + rect.width) > 5)
+        ) && lastEl;
     }
 
 
@@ -1330,9 +1314,9 @@
         return $
             ? $(el).clone(true)[0]
             : (Polymer && Polymer.dom
-                ? Polymer.dom(el).cloneNode(true)
-                : el.cloneNode(true)
-        );
+                    ? Polymer.dom(el).cloneNode(true)
+                    : el.cloneNode(true)
+            );
     }
 
 
@@ -1357,7 +1341,7 @@
     /**
      * Create sortable instance
      * @param {HTMLElement}  el
-     * @param {Object}      [options]
+     * @param {object}      [options]
      */
     Sortable.create = function (el, options) {
         return new Sortable(el, options);

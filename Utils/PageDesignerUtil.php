@@ -10,73 +10,67 @@
 namespace Magenerds\PageDesigner\Utils;
 
 use Magenerds\PageDesigner\Constants;
+use Magenerds\WysiwygWidget\Block\Widget\Editor;
+use Magenerds\WysiwygWidget\Wysiwyg\Encoder;
 
 /**
  * Class PageDesignerUtil
  *
  * @package     Magenerds\PageDesigner\Utils
  * @file        PageDesignerUtil.php
- * @copyright   Copyright (c) 2017 TechDivision GmbH (http://www.techdivision.com)
+ * @copyright   Copyright (c) 2019 TechDivision GmbH (https://www.techdivision.com)
  * @site        https://www.techdivision.com/
  * @author      Julian Schlarb <j.schlarb@techdivision.com>
  */
 class PageDesignerUtil
 {
     /**
+     * @var Encoder
+     */
+    protected $encoder;
+
+    /**
+     * PageDesignerUtil constructor.
+     *
+     * @param Encoder $encoder
+     */
+    public function __construct(
+        Encoder $encoder
+    )
+    {
+        $this->encoder = $encoder;
+    }
+
+    /**
      * Creates a valid json for the page designer
+     * from an existing html
      *
      * @param string $html
      * @return string
      */
-    public function getPageDesignerJsonFromHtml($html)
+    public function getJsonFromHtml($html)
     {
-        // build html from content
-        $encodedHtml = base64_encode($html);
-        $content = '{{widget type="%s" content="' . Constants::BASE64_PREFIX . '%s"}}';
-        $content = sprintf($content, Constants::WIDGET_TYPE, $encodedHtml);
-
-        // add to page designer object
-        $object = [
+        return json_encode([
             "version" => Constants::VERSION,
-            "rows" => [
-                [
-                    "columns" => [
-                        [
-                            "gridSize" => [
-                                "md" => Constants::DEFAULT_GRID_SIZE,
-                            ],
-                            "content" => $content,
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        // return json
-        return json_encode($object);
+            "rows" => [[
+                "columns" => [[
+                    "gridSize" => [
+                        "md" => Constants::DEFAULT_GRID_SIZE,
+                    ],
+                    "content" => sprintf('{{widget type="%s" content="%s"}}', Editor::class, $this->encoder->encode($html)),
+                ]],
+            ]],
+        ]);
     }
 
     /**
-     * Check for {@link Constants::ATTR_PAGE_DESIGNER_JSON} is present or not in the given array
+     * Check if json is present or not in the given array
      *
      * @param $data
      * @return bool
      */
-    public function mustPageDesignerJsonProvided($data)
+    public function shouldGenerateJson($data)
     {
-        // check for existence of attribute
-        if (!isset($data[Constants::ATTR_CONTENT])) {
-            return false;
-        }
-
-        // check if it is not empty
-        if (isset($data[Constants::ATTR_PAGE_DESIGNER_JSON])
-            && !empty($data[Constants::ATTR_PAGE_DESIGNER_JSON])
-        ) {
-            return false;
-        }
-
-        // it's filled
-        return true;
+        return isset($data[Constants::ATTR_CONTENT]) && (!isset($data[Constants::ATTR_PAGE_DESIGNER_JSON]) || empty($data[Constants::ATTR_PAGE_DESIGNER_JSON]));
     }
 }
