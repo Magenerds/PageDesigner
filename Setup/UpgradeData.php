@@ -53,7 +53,7 @@ class UpgradeData implements UpgradeDataInterface
                 /** @noinspection SqlNoDataSourceInspection */
                 $setup->getConnection()->query(sprintf(
                     "UPDATE IGNORE %s SET %s = REPLACE(%s, '%s', '%s') WHERE %s LIKE '%%%s%%' ESCAPE '|'",
-                    $table, $field, $field, $replacedWidget, $newWidget, $field, $replacedWidget
+                    $setup->getTable($table), $field, $field, $replacedWidget, $newWidget, $field, $replacedWidget
                 ));
             }
         }
