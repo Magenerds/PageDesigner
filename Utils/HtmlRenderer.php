@@ -135,14 +135,23 @@ class HtmlRenderer implements HtmlRendererInterface
     const DOM_PROPERTY_CSS_CLASS = 'class';
 
     /**
+     * Should PageDesigner Markup NOT render
+     *
+     * @var bool
+     */
+    protected $withoutPageDesignerMarkup = false;
+
+    /**
      * Converts a json object to html
      *
      * @param string $json page designer json
+     * @param bool $withoutPdMarkup Render without PageDesigner Markup
      * @return string
      * @throws ValidatorException
      */
-    public function toHtml($json)
+    public function toHtml($json, $withoutPdMarkup=false)
     {
+        $this->withoutPageDesignerMarkup = $withoutPdMarkup;
         // define result
         $result = '';
 
@@ -157,6 +166,8 @@ class HtmlRenderer implements HtmlRendererInterface
             throw new ValidatorException(__('Page Designer detected an invalid form input.'));
         }
 
+        $this->validateWithoutPageDesigner($data);
+
         // iterate over rows and render them
         if (isset($data['rows'])) {
             foreach ($data['rows'] as $row) {
@@ -166,6 +177,25 @@ class HtmlRenderer implements HtmlRendererInterface
 
         // return result
         return $result;
+    }
+
+    /**
+     * If several rows or one row but several columns are defined, then the markup must be output.
+     *
+     * @param array $data
+     */
+    protected function validateWithoutPageDesigner(array $data)
+    {
+        if (!$this->withoutPageDesignerMarkup) {
+            return;
+        }
+
+        if (isset($data['rows']) && count($data['rows']) > 1) {
+            $this->withoutPageDesignerMarkup = false;
+        }
+        elseif (isset($data['rows']['columns']) && count($data['rows']['columns']) > 1) {
+            $this->withoutPageDesignerMarkup = false;
+        }
     }
 
     /**
@@ -183,8 +213,11 @@ class HtmlRenderer implements HtmlRendererInterface
             static::DOM_PROPERTY_CSS_CLASS => static::CLASS_ROW_REGEX,
         ]);
 
+        $result = '';
         // open element tag
-        $result = $this->openTag(static::DEFAULT_ELEMENT_TAG, $attributes);
+        if (!$this->withoutPageDesignerMarkup) {
+            $result = $this->openTag(static::DEFAULT_ELEMENT_TAG, $attributes);
+        }
 
         // if we have columns defined
         if (isset($row['columns'])) {
@@ -194,8 +227,11 @@ class HtmlRenderer implements HtmlRendererInterface
             }
         }
 
-        // return result with closing element tag
-        return $result . $this->closeTag(static::DEFAULT_ELEMENT_TAG);
+        // closing element tag
+        if (!$this->withoutPageDesignerMarkup) {
+            $result .= $this->closeTag(static::DEFAULT_ELEMENT_TAG);
+        }
+        return $result;
     }
 
     /**
@@ -287,14 +323,20 @@ class HtmlRenderer implements HtmlRendererInterface
             static::DOM_PROPERTY_CSS_CLASS => static::COLUMN_REGEX,
         ]);
 
+        $result = '';
         // open element
-        $result = $this->openTag(static::DEFAULT_ELEMENT_TAG, $attributes);
+        if (!$this->withoutPageDesignerMarkup) {
+            $result = $this->openTag(static::DEFAULT_ELEMENT_TAG, $attributes);
+        }
 
         // add content
         $result .= isset($column['content']) ? $column['content'] : '';
 
-        // return result with closing element tag
-        return $result . $this->closeTag(static::DEFAULT_ELEMENT_TAG);
+        // closing element tag
+        if (!$this->withoutPageDesignerMarkup) {
+            $result .= $this->closeTag(static::DEFAULT_ELEMENT_TAG);
+        }
+        return $result;
     }
 
     /**

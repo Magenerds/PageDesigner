@@ -26,8 +26,9 @@ interface HtmlRendererInterface
      * Converts a json object to html
      *
      * @param string $json
+     * @param bool $withoutPdMarkup
      * @return string
      * @throws Exception
      */
-    public function toHtml($json);
+    public function toHtml($json, $withoutPdMarkup=false);
 }

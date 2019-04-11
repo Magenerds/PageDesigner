@@ -28,6 +28,31 @@
                 </item>
             </argument>
         </field>
+        <!-- remove pagedesigner markup -->
+        <field name="page_designer_remove" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">block</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Remove PageDesigner markup</label>
+                <dataScope>page_designer_remove</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
         <!-- page designer -->
         <field name="page-designer" formElement="component">
             <argument name="data" xsi:type="array">

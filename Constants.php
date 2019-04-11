@@ -42,6 +42,13 @@ interface Constants
     const ATTR_PAGE_DESIGNER_JSON = 'page_designer_json';
 
     /**
+     * Attribute name for page designer remove flag
+     *
+     * @type string
+     */
+    const ATTR_PAGE_DESIGNER_REMOVE = 'page_designer_remove';
+
+    /**
      * Attribute name for content
      *
      * @type string
