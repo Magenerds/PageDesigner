@@ -30,5 +30,5 @@ interface HtmlRendererInterface
      * @return string
      * @throws Exception
      */
-    public function toHtml($json, $withoutPdMarkup=false);
+    public function toHtml($json, $withoutPdMarkup = false);
 }

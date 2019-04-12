@@ -149,7 +149,7 @@ class HtmlRenderer implements HtmlRendererInterface
      * @return string
      * @throws ValidatorException
      */
-    public function toHtml($json, $withoutPdMarkup=false)
+    public function toHtml($json, $withoutPdMarkup = false)
     {
         $this->withoutPageDesignerMarkup = $withoutPdMarkup;
         // define result
@@ -192,8 +192,7 @@ class HtmlRenderer implements HtmlRendererInterface
 
         if (isset($data['rows']) && count($data['rows']) > 1) {
             $this->withoutPageDesignerMarkup = false;
-        }
-        elseif (isset($data['rows']['columns']) && count($data['rows']['columns']) > 1) {
+        } elseif (isset($data['rows']['columns']) && count($data['rows']['columns']) > 1) {
             $this->withoutPageDesignerMarkup = false;
         }
     }
