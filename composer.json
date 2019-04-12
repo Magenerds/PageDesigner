@@ -1,23 +1,27 @@
 {
-  "name": "magenerds/pagedesigner",
-  "description": "This module lets you edit cms pages easily with drag and drop",
-  "require": {
-    "magento/framework": "^102.0.0",
-    "magento/module-cms": "*",
-    "magento/module-backend": "*",
-    "magenerds/dashboard": "*",
-    "magenerds/wysiwyg-widget": "^1.0"
-  },
-  "type": "magento2-module",
-  "license": [
-    "OSL-3.0"
-  ],
-  "autoload": {
-    "files": [
-      "registration.php"
+    "name": "magenerds/pagedesigner",
+    "description": "This module lets you edit cms pages easily with drag and drop",
+    "require": {
+        "magento/framework": "^102.0.0",
+        "magento/module-cms": "*",
+        "magento/module-backend": "*",
+        "magenerds/dashboard": "*",
+        "magenerds/wysiwyg-widget": "^1.0"
+    },
+    "conflict": {
+        "magento/module-page-builder": "*",
+        "gene/bluefoot": "*"
+    },
+    "type": "magento2-module",
+    "license": [
+        "OSL-3.0"
     ],
-    "psr-4": {
-      "Magenerds\\PageDesigner\\": ""
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magenerds\\PageDesigner\\": ""
+        }
     }
-  }
 }
