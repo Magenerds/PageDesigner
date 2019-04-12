@@ -261,6 +261,13 @@ define([
                      * @param {Function} callback
                      */
                     "onColumnContentSet": function (column, currentContent, callback) {
+                        // remove old editors
+                        $.each(tinyMCE.editors, function (i, editor) {
+                            if (editor && !document.getElementById(editor.id)) {
+                                editor.remove();
+                            }
+                        });
+
                         // set editor as a block element to be able to access it
                         var wysControl = jElement.parent().find('.admin__control-wysiwig').parent();
                         if (wysControl.is(':hidden')) {
