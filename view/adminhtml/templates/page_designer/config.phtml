@@ -7,6 +7,9 @@
  * http://opensource.org/licenses/osl-3.0.php
  */
 
+use Magenerds\WysiwygWidget\Block\Widget\Editor;
+use Magento\Framework\View\Element\Template;
+
 /**
  * Template for the Page Designer configuration
  *
@@ -17,7 +20,7 @@
  * @author      Simon Sippert <s.sippert@techdivision.com>
  */
 
-/** @var \Magento\Framework\View\Element\Template $block */
+/** @var Template $block */
 ?>
 <script>
     /**
@@ -26,6 +29,8 @@
      * @type {{}}
      */
     window.pageDesignerConfig = {
+        // widget types with wysiwyg content
+        wysiwygWidgetTypes: <?php echo json_encode([Editor::class]); ?>,
         // settings route url (columns)
         columnSettingsUrl: <?php echo json_encode($block->getUrl('adminhtml/pageDesigner/columnSettings')); ?>,
         // settings route url (rows)

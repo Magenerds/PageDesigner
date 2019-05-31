@@ -285,6 +285,31 @@ define([
 
                         // preserve original function
                         // noinspection AmdModulesDependencies
+                        if (!WysiwygWidget.Widget.prototype.insertWidget_original) {
+                            // noinspection AmdModulesDependencies
+                            WysiwygWidget.Widget.prototype.insertWidget_original = WysiwygWidget.Widget.prototype.insertWidget;
+                        }
+
+                        // clear selected node
+                        // noinspection AmdModulesDependencies
+                        WysiwygWidget.Widget.prototype.insertWidget = function () { // reset function
+                            // noinspection AmdModulesDependencies
+                            this.insertWidget = WysiwygWidget.Widget.prototype.insertWidget = WysiwygWidget.Widget.prototype.insertWidget_original;
+
+                            // get current form
+                            let form = $('#' + this.formEl);
+
+                            // clear active node if we got a wysiwyg widget
+                            if ($.inArray(form.find('select[name="widget_type"]').val(), window.pageDesignerConfig.wysiwygWidgetTypes) !== -1) {
+                                window.widgetTools.setActiveSelectedNode(null);
+                            }
+
+                            // call parent function
+                            return this.insertWidget();
+                        };
+
+                        // preserve original function
+                        // noinspection AmdModulesDependencies
                         if (!WysiwygWidget.Widget.prototype.getWysiwygNode_original) {
                             // noinspection AmdModulesDependencies
                             WysiwygWidget.Widget.prototype.getWysiwygNode_original = WysiwygWidget.Widget.prototype.getWysiwygNode;
