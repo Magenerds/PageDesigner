@@ -281,6 +281,7 @@ define([
                         // check if we are in edit mode
                         let editMode = !!column.data('pd-content');
                         window.widgetTools.setEditMode(editMode);
+                        window.widgetTools.setActiveSelectedNode(null);
 
                         // preserve original function
                         // noinspection AmdModulesDependencies
