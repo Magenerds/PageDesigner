@@ -27,7 +27,7 @@ use Magento\Framework\Setup\UninstallInterface;
 class Uninstall implements UninstallInterface
 {
     /**
-     * Invoked when remove-data flag is set during module uninstall.
+     * Invoked when remove-data flag is set during module uninstall
      *
      * @param SetupInterface|SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
@@ -37,21 +37,22 @@ class Uninstall implements UninstallInterface
         $setup->startSetup();
 
         foreach (Constants::CONTENT_TABLES as $table) {
-            $this->dropPageDesignerColumn($setup, $setup->getTable($table));
+            $this->dropPageDesignerColumns($setup, $setup->getTable($table));
         }
 
         $setup->endSetup();
     }
 
     /**
-     * Drop the page designer column
+     * Drop the page designer columns
      *
      * @param SetupInterface|SchemaSetupInterface $setup
      * @param string $table
      */
-    protected function dropPageDesignerColumn(SchemaSetupInterface $setup, $table)
+    protected function dropPageDesignerColumns(SchemaSetupInterface $setup, $table)
     {
         $connection = $setup->getConnection();
         $connection->dropColumn($table, Constants::ATTR_PAGE_DESIGNER_JSON);
+        $connection->dropColumn($table, Constants::ATTR_PAGE_DESIGNER_REMOVE);
     }
 }

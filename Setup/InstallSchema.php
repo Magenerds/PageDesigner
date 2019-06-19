@@ -28,7 +28,7 @@ use Magento\Framework\Setup\SetupInterface;
 class InstallSchema implements InstallSchemaInterface
 {
     /**
-     * Add `page_designer_json` to cms_block and cms_page
+     * Install schema
      *
      * @param SetupInterface|SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
@@ -37,20 +37,21 @@ class InstallSchema implements InstallSchemaInterface
     {
         $setup->startSetup();
 
+        // add json column to tables
         foreach (Constants::CONTENT_TABLES as $table) {
-            $this->addPageDesignerColumn($setup, $setup->getTable($table));
+            $this->addPageDesignerJsonColumn($setup, $setup->getTable($table));
         }
 
         $setup->endSetup();
     }
 
     /**
-     * Add the page designer column
+     * Add page designer json column
      *
      * @param SetupInterface|SchemaSetupInterface $setup
      * @param string $table
      */
-    protected function addPageDesignerColumn(SchemaSetupInterface $setup, $table)
+    protected function addPageDesignerJsonColumn(SchemaSetupInterface $setup, $table)
     {
         $column = [
             'type' => Table::TYPE_TEXT,

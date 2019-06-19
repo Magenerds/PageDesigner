@@ -25,7 +25,7 @@ use Magento\Framework\Setup\UpgradeDataInterface;
 class UpgradeData implements UpgradeDataInterface
 {
     /**
-     * Upgrade data for module
+     * Upgrade data
      *
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
