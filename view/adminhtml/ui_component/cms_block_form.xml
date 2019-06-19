@@ -28,7 +28,7 @@
                 </item>
             </argument>
         </field>
-        <!-- remove pagedesigner markup -->
+        <!-- remove page designer markup -->
         <field name="page_designer_remove" formElement="checkbox">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -38,7 +38,7 @@
             </argument>
             <settings>
                 <dataType>boolean</dataType>
-                <label translate="true">Remove PageDesigner markup</label>
+                <label translate="true">Remove Page Designer Markup</label>
                 <dataScope>page_designer_remove</dataScope>
             </settings>
             <formElements>

@@ -135,7 +135,7 @@ class HtmlRenderer implements HtmlRendererInterface
     const DOM_PROPERTY_CSS_CLASS = 'class';
 
     /**
-     * Should PageDesigner Markup NOT render
+     * Defines if Page Designer Markup should NOT render
      *
      * @var bool
      */
@@ -145,7 +145,7 @@ class HtmlRenderer implements HtmlRendererInterface
      * Converts a json object to html
      *
      * @param string $json page designer json
-     * @param bool $withoutPdMarkup Render without PageDesigner Markup
+     * @param bool $withoutPdMarkup Remove Page Designer Markup
      * @return string
      * @throws ValidatorException
      */

@@ -37,7 +37,7 @@
             </argument>
             <settings>
                 <dataType>boolean</dataType>
-                <label translate="true">Remove PageDesigner markup</label>
+                <label translate="true">Remove Page Designer Markup</label>
                 <dataScope>page_designer_remove</dataScope>
             </settings>
             <formElements>

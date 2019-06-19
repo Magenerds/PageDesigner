@@ -67,7 +67,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
             'type' => Table::TYPE_SMALLINT,
             'nullable' => false,
             'default' => 0,
-            'comment' => 'Render without main PageDesigner markup',
+            'comment' => 'Remove Page Designer Markup',
         ];
 
         $connection = $setup->getConnection();
