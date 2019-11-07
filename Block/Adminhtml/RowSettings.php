@@ -34,7 +34,7 @@ class RowSettings extends SettingsAbstract
         // add field
         $this->addField(new DataObject([
             'key' => 'css_class',
-            'type' => 'select',
+            'type' => 'multiselect',
             'values' => $this->cssClassRowModel->toOptionArray(),
             'label' => __('CSS Class'),
         ]));

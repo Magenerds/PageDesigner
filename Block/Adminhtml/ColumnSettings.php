@@ -34,7 +34,7 @@ class ColumnSettings extends SettingsAbstract
         // add field
         $this->addField(new DataObject([
             'key' => 'css_class',
-            'type' => 'select',
+            'type' => 'multiselect',
             'values' => $this->cssClassColumnModel->toOptionArray(),
             'label' => __('CSS Class'),
         ]));
