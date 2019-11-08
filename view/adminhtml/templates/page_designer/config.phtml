@@ -9,6 +9,7 @@
 
 use Magenerds\WysiwygWidget\Block\Widget\Editor;
 use Magento\Framework\View\Element\Template;
+use Magenerds\PageDesigner\Utils\HtmlRenderer;
 
 /**
  * Template for the Page Designer configuration
@@ -30,11 +31,11 @@ use Magento\Framework\View\Element\Template;
      */
     window.pageDesignerConfig = {
         // widget types with wysiwyg content
-        wysiwygWidgetTypes: <?php echo json_encode([Editor::class]); ?>,
+        wysiwygWidgetTypes: <?= json_encode([Editor::class]); ?>,
         // settings route url (columns)
-        columnSettingsUrl: <?php echo json_encode($block->getUrl('adminhtml/pageDesigner/columnSettings')); ?>,
+        columnSettingsUrl: <?= json_encode($block->getUrl('adminhtml/pageDesigner/columnSettings')); ?>,
         // settings route url (rows)
-        rowSettingsUrl: <?php echo json_encode($block->getUrl('adminhtml/pageDesigner/rowSettings')); ?>,
+        rowSettingsUrl: <?= json_encode($block->getUrl('adminhtml/pageDesigner/rowSettings')); ?>,
         // settings save callback
         settingsCallback: null,
         /**
@@ -46,10 +47,14 @@ use Magento\Framework\View\Element\Template;
 
             // define json
             var json = {};
+            var content = '';
 
             // add data to json
             jQuery(data).each(function () {
-                json[this.name] = this.value;
+                var name = this.name === '<?= HtmlRenderer::JSON_PROPERTY_CSS_CLASS ?>[]' ?
+                    '<?= HtmlRenderer::JSON_PROPERTY_CSS_CLASS ?>' : this.name;
+                content = (content.length > 0) ? content + ' ' + this.value : this.value;
+                json[name] = content;
             });
 
             // save settings on column

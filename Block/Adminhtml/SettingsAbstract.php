@@ -164,8 +164,8 @@ abstract class SettingsAbstract extends Generic
             $data = array_merge($data, $options);
         }
 
-        // get data
-        $data['value'] = $this->getValue($parameter, $fieldName);
+        // get data and prepare it for multiselect
+        $data['value'] = explode(' ', $this->getValue($parameter, $fieldName));
 
         // prepare element dropdown values
         /** @noinspection PhpUndefinedMethodInspection */
