@@ -6,7 +6,7 @@
         "magento/module-cms": "*",
         "magento/module-backend": "*",
         "magenerds/dashboard": "*",
-        "magenerds/wysiwyg-widget": "^1.0|dev-prepare-m24"
+        "magenerds/wysiwyg-widget": "dev-prepare-m24"
     },
     "conflict": {
         "magento/module-page-builder": "*",
