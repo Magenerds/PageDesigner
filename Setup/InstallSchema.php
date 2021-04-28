@@ -10,6 +10,7 @@
 namespace Magenerds\PageDesigner\Setup;
 
 use Magenerds\PageDesigner\Constants;
+use Magenerds\PageDesigner\Job\Migration;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -28,6 +29,17 @@ use Magento\Framework\Setup\SetupInterface;
 class InstallSchema implements InstallSchemaInterface
 {
     /**
+     * InstallSchema constructor.
+     *
+     * @param Migration $migration
+     */
+    public function __construct(
+        Migration $migration
+    ) {
+        $this->migration = $migration;
+    }
+
+    /**
      * Install schema
      *
      * @param SetupInterface|SchemaSetupInterface $setup
@@ -41,6 +53,8 @@ class InstallSchema implements InstallSchemaInterface
         foreach (Constants::CONTENT_TABLES as $table) {
             $this->addPageDesignerJsonColumn($setup, $setup->getTable($table));
         }
+
+        $this->migration->migrate();
 
         $setup->endSetup();
     }

@@ -10,6 +10,7 @@
 namespace Magenerds\PageDesigner\Setup;
 
 use Magenerds\PageDesigner\Constants;
+use Magenerds\PageDesigner\Job\Migration;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\SetupInterface;
@@ -27,6 +28,17 @@ use Magento\Framework\Setup\UninstallInterface;
 class Uninstall implements UninstallInterface
 {
     /**
+     * Uninstall constructor.
+     *
+     * @param Migration $migration
+     */
+    public function __construct(
+        Migration $migration
+    ) {
+        $this->migration = $migration;
+    }
+
+    /**
      * Invoked when remove-data flag is set during module uninstall
      *
      * @param SetupInterface|SchemaSetupInterface $setup
@@ -35,6 +47,8 @@ class Uninstall implements UninstallInterface
     public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context) // NOSONAR
     {
         $setup->startSetup();
+
+        $this->migration->revert();
 
         foreach (Constants::CONTENT_TABLES as $table) {
             $this->dropPageDesignerColumns($setup, $setup->getTable($table));
