@@ -60,7 +60,7 @@ final class BlockPlugin
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $json = $block->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
-        if (strlen(trim($json)) > 0) {
+        if (is_string($json) && strlen(trim($json)) > 0) {
             $block->setContent($this->htmlRenderer->toHtml($json, $block->getData(Constants::ATTR_PAGE_DESIGNER_REMOVE)));
         }
     }
