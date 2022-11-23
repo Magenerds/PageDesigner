@@ -60,7 +60,7 @@ final class PagePlugin
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $json = $page->getData(Constants::ATTR_PAGE_DESIGNER_JSON);
-        if (strlen(trim($json)) > 0) {
+        if (is_string($json) && strlen(trim($json)) > 0) {
             $page->setContent($this->htmlRenderer->toHtml($json, $page->getData(Constants::ATTR_PAGE_DESIGNER_REMOVE)));
         }
     }
