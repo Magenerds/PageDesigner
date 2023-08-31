@@ -165,7 +165,7 @@ abstract class SettingsAbstract extends Generic
         }
 
         // get data and prepare it for multiselect
-        $data['value'] = explode(' ', $this->getValue($parameter, $fieldName));
+        $data['value'] = explode(' ', (string)$this->getValue($parameter, $fieldName));
 
         // prepare element dropdown values
         /** @noinspection PhpUndefinedMethodInspection */
